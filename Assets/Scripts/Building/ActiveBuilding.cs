@@ -10,7 +10,7 @@ public class ActiveBuilding : Building
     public Vector2Int RoadConnectionPoint { get => _roadConnectionPoint; }
     Coroutine tickingCour;
     [SerializeField] RecourceType recource;
-    [SerializeField] int amount;
+    [SerializeField] float amount;
     private void Awake()
     {
         checkIfAllSetRight();

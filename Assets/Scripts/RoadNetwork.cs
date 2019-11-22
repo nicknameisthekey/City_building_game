@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RoadNetwork
 {
-    public Dictionary<RecourceType, int> Recources = new Dictionary<RecourceType, int>();
+    public Dictionary<RecourceType, float> Recources = new Dictionary<RecourceType, float>();
     public List<Building> buildingsInNetwork { get; private set; } = new List<Building>();
+    public event Action<Dictionary<RecourceType, float>> RecourcesChanged = delegate { };
     private static RoadNetwork consolidateStorages(RoadNetwork one, RoadNetwork two)
     {
         RoadNetwork newStorage = new RoadNetwork();
@@ -51,7 +53,7 @@ public class RoadNetwork
             road.ChangeStorage(newStorage);
         }
     }
-    public void changeRecourceAmount(RecourceType type, int amount)
+    public void changeRecourceAmount(RecourceType type, float amount)
     {
         if (Recources.ContainsKey(type))
         {
@@ -61,6 +63,7 @@ public class RoadNetwork
         {
             Recources.Add(type, amount);
         }
+        RecourcesChanged.Invoke(Recources);
     }
 
 

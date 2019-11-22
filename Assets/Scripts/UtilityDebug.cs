@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UtilityDebug : MonoBehaviour
 {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X) && !EventSystem.current.IsPointerOverGameObject())
         {
             if (GameUtility.GetTileUnderMousePosition(out Tile tile))
             {
@@ -15,16 +16,17 @@ public class UtilityDebug : MonoBehaviour
                 {
                     TileWithBuilding tileWithBuilding = (TileWithBuilding)tile;
                     Debug.Log("В тайле по адресу " + tile.TileID);
-                    foreach (var res in tileWithBuilding.Building.currentNetwork.Recources)
-                    {
-                        Debug.Log(res.Key.ToString() + " " + res.Value);
-                    }
+                    NetworkInfo.ShowRecourcesOnNetwork(tileWithBuilding.Building.currentNetwork);
                 }
                 else
                 {
                     Debug.Log("Тайл " + tile.TileID + " без строения");
                 }
             }
+        }
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            NetworkInfo.HideRecourceInfo();
         }
 
     }
