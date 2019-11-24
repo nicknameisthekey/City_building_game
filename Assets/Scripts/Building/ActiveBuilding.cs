@@ -36,9 +36,7 @@ public class ActiveBuilding : Building, INetwork
                 _currentNetwork.addBuildingToNetwork(this);
                 startTicking();
             }
-
         }
-
     }
     void startTicking()
     {
@@ -67,7 +65,8 @@ public class ActiveBuilding : Building, INetwork
     }
     void tick()
     {
-        _currentNetwork.ChangeRecourceInNetwork(recource, amount);
+        if (!_currentNetwork.ChangeRecourceInNetwork(recource, amount))
+            Debug.Log("не смог добавить ресурс, нет места или подходящего хранилища");
         //Debug.Log("tick!");
         //Debug.Log("Изменил " + recource.ToString() + " на " + amount + " стало " + _currentNetwork.NetworkStorage.Recources[recource]);
     }

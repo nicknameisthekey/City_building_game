@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class StorageBuilding : Building, INetwork
 {
+    [SerializeField] List<RecourceType> _acceptableTypes;
+    [SerializeField] float _capacity;
+
     [SerializeField] Vector2Int _roadConnectionPoint;
     public Vector2Int RoadConnectionPoint => _roadConnectionPoint;
 
     RoadNetwork _currentNetwork;
     public RoadNetwork CurrentNetwork => _currentNetwork;
 
-    public Storage Storage { get; private set; } = new Storage();
+    public Storage Storage { get; private set; }
     public override void Initialize(Vector2Int tileID)
     {
         base.Initialize(tileID);
+        Storage = new Storage(_acceptableTypes, _capacity);
+
         Road road = GameUtility.GetRoadByID(TileID + _roadConnectionPoint);
         if (road != null)
         {
@@ -42,4 +47,6 @@ public class StorageBuilding : Building, INetwork
             _currentNetwork = newNetwork;
         }
     }
+
+
 }

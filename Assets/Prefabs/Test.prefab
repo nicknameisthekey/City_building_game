@@ -93,4 +93,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 1, y: 1}
+  _acceptableTypes: 03000000
+  _capacity: 1
   _roadConnectionPoint: {x: 1, y: 0}

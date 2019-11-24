@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 385299411}
   - component: {fileID: 385299412}
   - component: {fileID: 385299410}
+  - component: {fileID: 385299413}
   m_Layer: 0
   m_Name: ' --- Scripts ---'
   m_TagString: Untagged
@@ -210,7 +211,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   constructionPlaceHighlight: {fileID: 0}
-  mainCamera: {fileID: 519420031}
+--- !u!114 &385299413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385299407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1c81190185bd1746a406b250ace0135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingsToAdd:
+  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
+      type: 3}
+    TileIDToPlace: {x: 30, y: 30}
+  - BuildingPrefab: {fileID: 7495477507352536102, guid: 9db5ee8dc56037747b182368992aca71,
+      type: 3}
+    TileIDToPlace: {x: 29, y: 30}
+  - BuildingPrefab: {fileID: 565860393450820772, guid: 0918eda71a514cb4ba7aed981be69d84,
+      type: 3}
+    TileIDToPlace: {x: 31, y: 30}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

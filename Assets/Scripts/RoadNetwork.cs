@@ -38,13 +38,16 @@ public class RoadNetwork
             //}
         }
     }
-    public void ChangeRecourceInNetwork(RecourceType type, float amount)
+    public bool ChangeRecourceInNetwork(RecourceType type, float amount)
     {
-        storages[0].ChangeRecourceAmount(type, amount);
-        Debug.Log("изменил ресуср в сети "+NetworkNum);
-        //  NetworkStorage.Recources.Add(type, amount);
+        foreach (var storage in storages)
+        {
+            if (storage.AddRecource(type, amount))
+                return true;
+        }
+        return false;
+        //Debug.Log("изменил ресуср в сети "+NetworkNum);
     }
-
 
     public static void MergeNetworks(RoadNetwork one, RoadNetwork two)
     {

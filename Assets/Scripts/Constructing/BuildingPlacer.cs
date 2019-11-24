@@ -52,7 +52,7 @@ public class BuildingPlacer : MonoBehaviour
         }
     }
 
-    Vector3 getOffsetForBuilding(Vector2 size)
+    static Vector3 getOffsetForBuilding(Vector2 size)
     {
         Vector3 offset = Vector3.zero;
         if (size.x == 1 & size.y == 2)
@@ -132,7 +132,7 @@ public class BuildingPlacer : MonoBehaviour
         GameObject.Destroy(currentGO);
         StopedConstructing.Invoke();
     }
-    bool tryPlace(Building building, Vector2Int tileID)
+    static bool tryPlace(Building building, Vector2Int tileID)
     {
 
         GameObject.Destroy(MapGenerator.Map[tileID.x, tileID.y].TileGo);
@@ -140,5 +140,12 @@ public class BuildingPlacer : MonoBehaviour
         MapGenerator.Map[tileID.x, tileID.y] = new TileWithBuilding(currentGO, tileID, building);
         StopedConstructing.Invoke();
         return true;
+    }
+    public static void PlaceInstantly(GameObject PrefabToPlace, Vector2Int tileID)
+    {
+        currentGO = Instantiate(PrefabToPlace, MapGenerator.Map[tileID.x, tileID.y].TileGo.transform.position, Quaternion.identity);
+        Building building = currentGO.GetComponent<Building>();
+        currentGO.transform.position += getOffsetForBuilding(building.Size);
+        tryPlace(building, tileID);
     }
 }
