@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2167540578267900113}
   - component: {fileID: 4172747027967286495}
-  - component: {fileID: 8236587000117212638}
+  - component: {fileID: -8327077733253187594}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8236587000117212638
+--- !u!114 &-8327077733253187594
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,11 +89,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7495477507352536102}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d11b1397fcba284fb9ec041b6b501a6, type: 3}
+  m_Script: {fileID: 11500000, guid: e2fa832f10a77e04b92bd2eb4ca46ec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 1, y: 1}
-  TimeToTick: 3
-  _roadConnectionPoint: {x: -1, y: 0}
-  recource: 1
-  amount: 1
+  _roadConnectionPoint: {x: 1, y: 0}

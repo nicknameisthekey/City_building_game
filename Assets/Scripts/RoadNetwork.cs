@@ -5,70 +5,20 @@ using UnityEngine;
 
 public class RoadNetwork
 {
-    public Dictionary<RecourceType, float> Recources = new Dictionary<RecourceType, float>();
+    public static int NetworkNumbers = 0;
+    // public Dictionary<RecourceType, float> Recources = new Dictionary<RecourceType, float>();
     public List<Building> buildingsInNetwork { get; private set; } = new List<Building>();
-    public event Action<Dictionary<RecourceType, float>> RecourcesChanged = delegate { };
-    private static RoadNetwork consolidateStorages(RoadNetwork one, RoadNetwork two)
+    //public Storage NetworkStorage = new Storage();
+    public List<Storage> storages { get; private set; } = new List<Storage>();
+    public int NetworkNum;
+    public RoadNetwork()
     {
-        RoadNetwork newStorage = new RoadNetwork();
-        Debug.Log("wtf");
-        foreach (var resType in one.Recources.Keys)
-        {
-            Debug.Log(resType.ToString());
-            if (two.Recources.ContainsKey(resType))
-            {
-                Debug.Log("сложил ресурсы " + resType + " " + one.Recources[resType] + two.Recources[resType]);
-                newStorage.Recources.Add(resType, one.Recources[resType] + two.Recources[resType]);
-                two.Recources.Remove(resType);
-            }
-            else
-            {
-                Debug.Log("добавил ресурсы из первого" + resType + " " + one.Recources[resType]);
-                newStorage.Recources.Add(resType, one.Recources[resType]);
-
-            }
-
-        }
-        foreach (var resType in two.Recources.Keys)
-        {
-            Debug.Log("добавил ресурсы из второго" + resType + " " + two.Recources[resType]);
-            newStorage.Recources.Add(resType, two.Recources[resType]);
-
-        }
-        return newStorage;
+        NetworkNumbers++;
+        NetworkNum = NetworkNumbers;
     }
-    public static void MergeStorages(RoadNetwork one, RoadNetwork two)
-    {
-        RoadNetwork newStorage = consolidateStorages(one, two);
-        foreach (var road in one.buildingsInNetwork)
-        {
-            Debug.Log("добавил в новый список дорогу из первой сети");
-            newStorage.addBuildingToNetwork(road);
-            road.ChangeStorage(newStorage);
-        }
-        foreach (var road in two.buildingsInNetwork)
-        {
-            Debug.Log("добавил в новый список дорогу из второй сети");
-            newStorage.addBuildingToNetwork(road);
-            road.ChangeStorage(newStorage);
-        }
-    }
-    public void changeRecourceAmount(RecourceType type, float amount)
-    {
-        if (Recources.ContainsKey(type))
-        {
-            Recources[type] += amount;
-        }
-        else
-        {
-            Recources.Add(type, amount);
-        }
-        RecourcesChanged.Invoke(Recources);
-    }
-
-
     public void addBuildingToNetwork(Building building)
     {
+        //простое добавление в список всех зданий в сети
         if (buildingsInNetwork.Contains(building))
         {
             Debug.Log("попытка добавить здание которое уже в списке");
@@ -77,5 +27,76 @@ public class RoadNetwork
         {
             buildingsInNetwork.Add(building);
         }
+        if (building is StorageBuilding)
+        {
+            StorageBuilding storageBuilding = (StorageBuilding)building;
+            storages.Add(storageBuilding.Storage);
+            Debug.Log("распознал склад и добавил в сеть");
+            //foreach (var rec in storageBuilding.Storage.Recources)
+            //{
+            //    NetworkStorage.Recources[rec.Key] += rec.Value;
+            //}
+        }
     }
+    public void ChangeRecourceInNetwork(RecourceType type, float amount)
+    {
+        storages[0].ChangeRecourceAmount(type, amount);
+        Debug.Log("изменил ресуср в сети "+NetworkNum);
+        //  NetworkStorage.Recources.Add(type, amount);
+    }
+
+
+    public static void MergeNetworks(RoadNetwork one, RoadNetwork two)
+    {
+        RoadNetwork newNetwork = consolidateNetworks(one, two);
+        foreach (var building in newNetwork.buildingsInNetwork)
+        {
+            if (building is INetwork)
+            {
+                INetwork network = (INetwork)building;
+                network.ChangeRoadNetwork(newNetwork);
+            }
+            else
+                Debug.Log("в сети здание без интерфейса");
+        }
+    }
+    private static RoadNetwork consolidateNetworks(RoadNetwork one, RoadNetwork two)
+    {
+        RoadNetwork newNetwork = new RoadNetwork();
+        Debug.Log("consolidating, new network num = " + newNetwork.NetworkNum);
+        //foreach (var resType in one.Recources.Keys)
+        //{
+        //    Debug.Log(resType.ToString());
+        //    if (two.Recources.ContainsKey(resType))
+        //    {
+        //        Debug.Log("сложил ресурсы " + resType + " " + one.Recources[resType] + two.Recources[resType]);
+        //        newStorage.Recources.Add(resType, one.Recources[resType] + two.Recources[resType]);
+        //        two.Recources.Remove(resType);
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("добавил ресурсы из первого" + resType + " " + one.Recources[resType]);
+        //        newStorage.Recources.Add(resType, one.Recources[resType]);
+
+        //    }
+        //}
+        //foreach (var resType in two.Recources.Keys)
+        //{
+        //    Debug.Log("добавил ресурсы из второго" + resType + " " + two.Recources[resType]);
+        //    newStorage.Recources.Add(resType, two.Recources[resType]);
+
+        //}
+        foreach (var building in one.buildingsInNetwork)
+        {
+            if (two.buildingsInNetwork.Contains(building))
+                Debug.Log("вторая сеть содержит здание которого там не должно быть!");
+            newNetwork.addBuildingToNetwork(building);
+        }
+        foreach (var building in two.buildingsInNetwork)
+        {
+            newNetwork.addBuildingToNetwork(building);
+        }
+        return newNetwork;
+    }
+
 }

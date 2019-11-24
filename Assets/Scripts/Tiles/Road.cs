@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Road : Building
+public class Road : Building, INetwork
 {
     Vector2Int[] nearbyIDs = new Vector2Int[4];
-    List<Vector2Int> nearbyHouses = new List<Vector2Int>();
+
+    RoadNetwork _currentNetwork;
+    public RoadNetwork CurrentNetwork => _currentNetwork;
+
     public override void Initialize(Vector2Int tileId)
     {
         base.Initialize(tileId);
@@ -27,27 +30,28 @@ public class Road : Building
             var nearbyRoad = checkTileForRoad(MapGenerator.Map[id.x, id.y]);
             if (nearbyRoad != null)
             {
-                if (currentNetwork == null)
+                if (_currentNetwork == null)
                 {
-                    currentNetwork = nearbyRoad.currentNetwork;
-                    currentNetwork.addBuildingToNetwork(this);
+                    _currentNetwork = nearbyRoad.CurrentNetwork;
+                   _currentNetwork.addBuildingToNetwork(this);
                     Debug.Log("присоеденился к существующей сети");
                 }
-                else if (currentNetwork == nearbyRoad.currentNetwork)
+                else if (_currentNetwork == nearbyRoad.CurrentNetwork)
                 {
-                    //делать ничего не нужно?
+                    Debug.Log("соединился с текущей сетью");
                 }
-                else if (currentNetwork != nearbyRoad.currentNetwork)
+                else if (_currentNetwork != nearbyRoad.CurrentNetwork)
                 {
-                    Debug.Log("делаю слияние двух цепей");
-                    RoadNetwork.MergeStorages(currentNetwork, nearbyRoad.currentNetwork);
+                    Debug.Log("делаю слияние двух дорожных сетей");
+                    RoadNetwork.MergeNetworks(_currentNetwork, nearbyRoad.CurrentNetwork);
                 }
             }
         }
-        if (currentNetwork == null)
+        if (_currentNetwork == null)
         {
-            currentNetwork = new RoadNetwork();
-            currentNetwork.addBuildingToNetwork(this);
+            Debug.Log("создал новую сеть");
+            _currentNetwork = new RoadNetwork();
+            _currentNetwork.addBuildingToNetwork(this);
         }
     }
     void checkNearbyTilesForActivehouses()
@@ -58,7 +62,7 @@ public class Road : Building
             //после удаления дороги проверка новой на стоящие дома
             if (building != null && building.TileID + building.RoadConnectionPoint == TileID)
             {
-                Debug.Log("этот дом стоит правильно");
+                Debug.Log("нашел дом и должен присоединить его к сети, доделай");
             }
         }
     }
@@ -89,4 +93,10 @@ public class Road : Building
         return null;
     }
 
+    public void ChangeRoadNetwork(RoadNetwork newNetwork)
+    {
+        if (_currentNetwork == newNetwork)
+            Debug.Log("замена сети на существующую");
+        else _currentNetwork = newNetwork;
+    }
 }

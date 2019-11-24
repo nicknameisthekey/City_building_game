@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NetworkInfo : MonoBehaviour
+public class StorageInfo : MonoBehaviour
 {
     [SerializeField] GameObject recourceImagePrefab;
     [SerializeField] Transform layout;
@@ -10,8 +10,8 @@ public class NetworkInfo : MonoBehaviour
     [SerializeField] Sprite food;
     [SerializeField] Sprite wood;
     static Dictionary<RecourceType, RecourceImage> recourceImages = new Dictionary<RecourceType, RecourceImage>();
-    static NetworkInfo instance;
-    static RoadNetwork currentNetwork;
+    static StorageInfo instance;
+    static Storage currentStorage;
     private void Awake()
     {
         instance = this;
@@ -25,16 +25,19 @@ public class NetworkInfo : MonoBehaviour
         }
     }
 
-    public static void ShowRecourcesOnNetwork(RoadNetwork network)
+    public static void ShowRecources(Storage storage)
     {
         instance.gameObject.SetActive(true);
-        UpdateRecourceInfo(network.Recources);
-        currentNetwork = network;
-        network.RecourcesChanged += UpdateRecourceInfo;
+        UpdateRecourceInfo(storage.Recources);
+        currentStorage = storage;
+        storage.RecourceChanged += UpdateRecourceInfo;
+    }
+    public static void UpdateRecourceInfo(RecourceType type, float amount)
+    {
+        recourceImages[type].ChangeRecourceText(amount.ToString());
     }
     public static void UpdateRecourceInfo(Dictionary<RecourceType, float> recources)
     {
-
         foreach (var item in recourceImages)
         {
             item.Value.ChangeRecourceText("0");
@@ -47,7 +50,7 @@ public class NetworkInfo : MonoBehaviour
     public static void HideRecourceInfo()
     {
         instance.gameObject.SetActive(false);
-        currentNetwork.RecourcesChanged -= UpdateRecourceInfo;
+        currentStorage.RecourceChanged -= UpdateRecourceInfo;
 
     }
     Sprite getRightSprite(RecourceType recource)

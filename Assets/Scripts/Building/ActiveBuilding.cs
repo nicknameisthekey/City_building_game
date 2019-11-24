@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveBuilding : Building
+public class ActiveBuilding : Building, INetwork
 {
     [SerializeField] float TimeToTick;
-    [SerializeField] Vector2Int _roadConnectionPoint;
+
     float timeElapsedFromTick;
-    public Vector2Int RoadConnectionPoint { get => _roadConnectionPoint; }
+
     Coroutine tickingCour;
     [SerializeField] RecourceType recource;
     [SerializeField] float amount;
+    [SerializeField] Vector2Int _roadConnectionPoint;
+    RoadNetwork _currentNetwork;
+    public RoadNetwork CurrentNetwork => _currentNetwork;
+    public Vector2Int RoadConnectionPoint => _roadConnectionPoint;
+
     private void Awake()
     {
         checkIfAllSetRight();
@@ -18,19 +23,26 @@ public class ActiveBuilding : Building
     public override void Initialize(Vector2Int tileID)
     {
         base.Initialize(tileID);
-        Vector2Int connectedRoadID = TileID + _roadConnectionPoint;
-        var roadTile = MapGenerator.Map[connectedRoadID.x, connectedRoadID.y] as TileWithBuilding;
-        Road road = roadTile.Building as Road;
-        if (road.currentNetwork == null)
+        Road road = GameUtility.GetRoadByID(TileID + _roadConnectionPoint);
+        if (road != null)
         {
-            Debug.Log("road network null");
+            if (road.CurrentNetwork == null)
+            {
+                Debug.Log("road network null");
+            }
+            else
+            {
+                _currentNetwork = road.CurrentNetwork;
+                _currentNetwork.addBuildingToNetwork(this);
+                startTicking();
+            }
+
         }
-        ChangeStorage(road.currentNetwork);
-        startTicking();
+
     }
     void startTicking()
     {
-        if (tickingCour == null && currentNetwork != null)
+        if (tickingCour == null && _currentNetwork != null)
         {
             Debug.Log("запускаю корутину");
             tickingCour = StartCoroutine(tickCour());
@@ -55,22 +67,26 @@ public class ActiveBuilding : Building
     }
     void tick()
     {
-        currentNetwork.changeRecourceAmount(recource, amount);
-        //  Debug.Log("Изменил " + recource.ToString() + " на " + amount + " стало " + currentNetwork.Recources[recource]);
+        _currentNetwork.ChangeRecourceInNetwork(recource, amount);
+        //Debug.Log("tick!");
+        //Debug.Log("Изменил " + recource.ToString() + " на " + amount + " стало " + _currentNetwork.NetworkStorage.Recources[recource]);
     }
-    public override void ChangeStorage(RoadNetwork newStorage)
-    {
-        if (currentNetwork != newStorage)
-        {
-            currentNetwork = newStorage;
-            currentNetwork.addBuildingToNetwork(this);
-            startTicking();
-        }
-    }
+
 
     void checkIfAllSetRight()
     {
         if (TimeToTick <= 0)
             Debug.Log("time to tick was not set for " + gameObject.name);
+    }
+
+    public void ChangeRoadNetwork(RoadNetwork newNetwork)
+    {
+        if (_currentNetwork == newNetwork)
+            Debug.Log("замена сети на существующую");
+        else
+        {
+            Debug.Log(" дом сменил сеть на " + newNetwork.NetworkNum);
+            _currentNetwork = newNetwork;
+        }
     }
 }

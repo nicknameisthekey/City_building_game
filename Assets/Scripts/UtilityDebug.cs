@@ -16,7 +16,11 @@ public class UtilityDebug : MonoBehaviour
                 {
                     TileWithBuilding tileWithBuilding = (TileWithBuilding)tile;
                     Debug.Log("В тайле по адресу " + tile.TileID);
-                    NetworkInfo.ShowRecourcesOnNetwork(tileWithBuilding.Building.currentNetwork);
+                    if (tileWithBuilding.Building is StorageBuilding)
+                    {
+                        StorageBuilding storageBuilding = (StorageBuilding)tileWithBuilding.Building;
+                        StorageInfo.ShowRecources(storageBuilding.Storage);
+                    }
                 }
                 else
                 {
@@ -26,7 +30,7 @@ public class UtilityDebug : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            NetworkInfo.HideRecourceInfo();
+            StorageInfo.HideRecourceInfo();
         }
 
     }

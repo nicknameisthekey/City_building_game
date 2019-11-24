@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 1, y: 1}
-  TimeToTick: 10
-  _roadConnectionPoint: {x: 0, y: -1}
+  TimeToTick: 3
   recource: 2
   amount: 0.1
+  _roadConnectionPoint: {x: 0, y: -1}

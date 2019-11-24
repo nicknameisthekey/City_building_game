@@ -43,5 +43,10 @@ public static class GameUtility
             return true;
         return false;
     }
+    public static Road GetRoadByID(Vector2Int ID)
+    {
+        var roadTile = MapGenerator.Map[ID.x, ID.y] as TileWithBuilding;
+        return roadTile.Building as Road;
+    }
 
 }
