@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HelperFuncs : MonoBehaviour
+public class StandaloneBuilding : Building
 {
-    
+   
 }

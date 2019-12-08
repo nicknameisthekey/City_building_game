@@ -4,7 +4,18 @@ using UnityEngine;
 
 public static class GameUtility
 {
-    public static Vector2Int IsometricToCarestian(float x, float y, int MapSideSize)
+    public static Vector2Int GetNearbyIDByDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.BR: return new Vector2Int(0, -1);
+            case Direction.BL: return new Vector2Int(-1, 0);
+            case Direction.TL: return new Vector2Int(0, 1);
+            case Direction.TR: return new Vector2Int(1, 0);
+            default: return new Vector2Int(0, 0);
+        }
+    }
+    public static Vector2Int IsometricToTileID(float x, float y, int MapSideSize)
     {
         float cartX = ((2 * y + x) / 2) + 0.25f;
         float cartY = ((2 * y - x) / 2) + 0.25f;
@@ -18,9 +29,15 @@ public static class GameUtility
     {
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Debug.Log(IsometricToCarestian(mousePos.x, mousePos.y, MapGenerator.SideSize));
-        return IsometricToCarestian(mousePos.x, mousePos.y, MapGenerator.SideSize);
+        return IsometricToTileID(mousePos.x, mousePos.y, MapGenerator.SideSize);
     }
-
+    public static bool GetTileIDUnderMousePosition(out Vector2Int ID)
+    {
+        ID = GetTileIDUnderMousePosition();
+        if (CheckIDIfValid(ID))
+            return true;
+        else return false;
+    }
     public static Tile GetTileUnderMousePosition()
     {
         var tileID = GetTileIDUnderMousePosition();
@@ -39,14 +56,32 @@ public static class GameUtility
     }
     public static bool CheckIDIfValid(Vector2Int ID)
     {
-        if (ID.x >= -1 && ID.y >= -1 && ID.x <= MapGenerator.SideSize - 1 && ID.y <= MapGenerator.SideSize - 1)
+        if (ID.x >= 0 && ID.y >= 0 && ID.x <= MapGenerator.SideSize - 1 && ID.y <= MapGenerator.SideSize - 1)
             return true;
         return false;
     }
     public static Road GetRoadByID(Vector2Int ID)
     {
-        var roadTile = MapGenerator.Map[ID.x, ID.y] as TileWithBuilding;
-        return roadTile.Building as Road;
+        if (CheckIDIfValid(ID))
+        {
+            var roadTile = MapGenerator.Map[ID.x, ID.y] as TileWithBuilding;
+            if (roadTile != null) return roadTile.Building as Road;
+        }
+        return null;
+    }
+    public static bool GetRoadByID(Vector2Int ID, out Road road)
+    {
+        road = GetRoadByID(ID);
+        if (road != null)
+            return true;
+        else
+            return false;
+    }
+    public static Tile GetTileByID(Vector2Int ID)
+    {
+        if (CheckIDIfValid(ID))
+            return MapGenerator.Map[ID.x, ID.y];
+        else return null;
     }
 
 }

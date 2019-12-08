@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StorageBuilding : Building, INetwork
+public class StorageBuilding : BuildingNearRoad, INetwork
 {
     [SerializeField] List<RecourceType> _acceptableTypes;
     [SerializeField] float _capacity;
 
-    [SerializeField] Vector2Int _roadConnectionPoint;
-    public Vector2Int RoadConnectionPoint => _roadConnectionPoint;
 
     RoadNetwork _currentNetwork;
     public RoadNetwork CurrentNetwork => _currentNetwork;
 
     public Storage Storage { get; private set; }
-    public override void Initialize(Vector2Int tileID)
+    public override void Initialize(Vector2Int tileID, Vector2Int roadConnectionPoint)
     {
-        base.Initialize(tileID);
+        base.Initialize(tileID, roadConnectionPoint);
         Storage = new Storage(_acceptableTypes, _capacity);
 
         Road road = GameUtility.GetRoadByID(TileID + _roadConnectionPoint);

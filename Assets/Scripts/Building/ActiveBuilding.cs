@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveBuilding : Building, INetwork
+public class ActiveBuilding : BuildingNearRoad, INetwork
 {
     [SerializeField] float TimeToTick;
 
@@ -11,18 +11,18 @@ public class ActiveBuilding : Building, INetwork
     Coroutine tickingCour;
     [SerializeField] RecourceType recource;
     [SerializeField] float amount;
-    [SerializeField] Vector2Int _roadConnectionPoint;
+    
     RoadNetwork _currentNetwork;
     public RoadNetwork CurrentNetwork => _currentNetwork;
-    public Vector2Int RoadConnectionPoint => _roadConnectionPoint;
+ 
 
     private void Awake()
     {
         checkIfAllSetRight();
     }
-    public override void Initialize(Vector2Int tileID)
+    public override void Initialize(Vector2Int tileID, Vector2Int roadConntectionPoint)
     {
-        base.Initialize(tileID);
+        base.Initialize(tileID, roadConntectionPoint);
         Road road = GameUtility.GetRoadByID(TileID + _roadConnectionPoint);
         if (road != null)
         {

@@ -1,151 +1,112 @@
 ﻿
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BuildingPlacer : MonoBehaviour
 {
-    [SerializeField] Sprite constructionPlaceHighlight;
-
     public static event Action StartedConstructing = delegate { };
     public static event Action StopedConstructing = delegate { };
+
+    static Direction currentRotation = Direction.BR;
+
     static GameObject currentGO;
+    static Building currentBuilding;
     static BuildingPlacer instance;
     static Vector3 mousePos;
     private void Awake()
     {
         instance = this;
+        StopedConstructing += onStopConstruction;
     }
     public static void StartPlacing(GameObject prefab)
     {
         StartedConstructing.Invoke();
+        InputHandler.RotationKeyPressed += rotate;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         currentGO = Instantiate(prefab, new Vector2(mousePos.x, mousePos.y), Quaternion.identity);
-        Building building = currentGO.GetComponent<Building>();
-        instance.StartCoroutine(instance.draggingCour(building));
+        currentBuilding = currentGO.GetComponent<Building>();
+        currentBuilding.ShowSprite(currentRotation);
+        instance.StartCoroutine(instance.draggingCour(currentBuilding));
+    }
+    static void rotate()
+    {
+        currentRotation++;
+        if ((int)currentRotation > 3)
+            currentRotation = 0;
+        currentBuilding.ShowSprite(currentRotation);
     }
     IEnumerator draggingCour(Building building)
     {
         while (true)
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var tileID = GameUtility.GetTileIDUnderMousePosition();
-            if (GameUtility.CheckIDIfValid(tileID))
-                currentGO.transform.position = MapGenerator.Map[tileID.x, tileID.y].TileGo.transform.position + getOffsetForBuilding(building.Size);
+            bool canPlace;
+            if (GameUtility.GetTileIDUnderMousePosition(out Vector2Int tileID))
+            {
+                currentGO.transform.position = MapGenerator.Map[tileID.x, tileID.y].TileGo.transform.position;
+                canPlace = canPlaceHere(building, tileID);
+            }
             else
+            {
                 currentGO.transform.position = new Vector2(mousePos.x, mousePos.y);
-            bool canPlace = canPlaceHere(building, tileID);
+                canPlace = false;
+            }
             if (canPlace)
             {
                 // Debug.Log("can");
             }
             //  else Debug.Log("cannot");
-
-
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject() && canPlace)
             {
-                if (tryPlace(building, tileID))
-                    break;
+                place(building, tileID);
+                break;
             }
             yield return new WaitForEndOfFrame();
         }
     }
-
-    static Vector3 getOffsetForBuilding(Vector2 size)
-    {
-        Vector3 offset = Vector3.zero;
-        if (size.x == 1 & size.y == 2)
-        {
-            offset.x = 0.25f;
-            offset.y = 0.15f;
-        }
-        return offset;
-    }
-
     bool canPlaceHere(Building building, Vector2Int currentPos)
     {
-        if (GameUtility.CheckIDIfValid(currentPos) && MapGenerator.Map[currentPos.x, currentPos.y] is TileWithBuilding)
+        if (MapGenerator.Map[currentPos.x, currentPos.y] is TileWithBuilding)
         {
             //Debug.Log("tile with building or current pos was not valid");
             return false;
         }
-        else if (building is ActiveBuilding)
+        else if (building is BuildingNearRoad)
         {
-            return canPlaceActiveBuilding((ActiveBuilding)building, currentPos);
-        }
-        else if (building is StorageBuilding)
-        {
-            return canPlaceStorageBuilding((StorageBuilding)building, currentPos);
-        }
-        return true;
-    }
-    bool canPlaceStorageBuilding(StorageBuilding building, Vector2Int currentPos)
-    {
-        StorageBuilding storageBuilding = (StorageBuilding)building;
-        Vector2Int roadPointID = currentPos + storageBuilding.RoadConnectionPoint;
-        if (!GameUtility.CheckIDIfValid(roadPointID))
-        {
-            Debug.Log("координаты точки дороги за границами массива " + roadPointID);
-            Debug.Log("Mouse at " + currentPos + " road must be on " + roadPointID);
-            return false;
-        }
-
-        //  Debug.Log("Mouse at " + currentPos + " road must be on " + roadPointID);
-        Tile possibleRoadTile = MapGenerator.Map[roadPointID.x, roadPointID.y];
-        if (possibleRoadTile is TileWithBuilding)
-        {
-            TileWithBuilding TWB = (TileWithBuilding)possibleRoadTile;
-            if (TWB.Building is Road)
+            Vector2Int roadPointID = currentPos + GameUtility.GetNearbyIDByDirection(currentRotation);
+            if (GameUtility.GetRoadByID(roadPointID, out Road road))
                 return true;
-            else
-                return false;
         }
-        else return false;
+        else if (building is StandaloneBuilding)
+            return true;
+        return false;
     }
-    bool canPlaceActiveBuilding(ActiveBuilding building, Vector2Int currentPos)
-    {
-        ActiveBuilding active = (ActiveBuilding)building;
-        Vector2Int roadPointID = currentPos + active.RoadConnectionPoint;
-        if (!GameUtility.CheckIDIfValid(roadPointID))
-        {
-            Debug.Log("координаты точки дороги за границами массива " + roadPointID);
-            Debug.Log("Mouse at " + currentPos + " road must be on " + roadPointID);
-            return false;
-        }
 
-        //  Debug.Log("Mouse at " + currentPos + " road must be on " + roadPointID);
-        Tile possibleRoadTile = MapGenerator.Map[roadPointID.x, roadPointID.y];
-        if (possibleRoadTile is TileWithBuilding)
-        {
-            TileWithBuilding TWB = (TileWithBuilding)possibleRoadTile;
-            if (TWB.Building is Road)
-                return true;
-            else
-                return false;
-        }
-        else return false;
-    }
     public static void StopContructing()
     {
         instance.StopAllCoroutines();
         GameObject.Destroy(currentGO);
         StopedConstructing.Invoke();
     }
-    static bool tryPlace(Building building, Vector2Int tileID)
+    static void place(Building building, Vector2Int tileID)
     {
-
         GameObject.Destroy(MapGenerator.Map[tileID.x, tileID.y].TileGo);
         building.Initialize(tileID);
         MapGenerator.Map[tileID.x, tileID.y] = new TileWithBuilding(currentGO, tileID, building);
+        currentBuilding = null;
         StopedConstructing.Invoke();
-        return true;
     }
     public static void PlaceInstantly(GameObject PrefabToPlace, Vector2Int tileID)
     {
         currentGO = Instantiate(PrefabToPlace, MapGenerator.Map[tileID.x, tileID.y].TileGo.transform.position, Quaternion.identity);
         Building building = currentGO.GetComponent<Building>();
-        currentGO.transform.position += getOffsetForBuilding(building.Size);
-        tryPlace(building, tileID);
+        place(building, tileID);
+    }
+    static void onStopConstruction()
+    {
+        InputHandler.RotationKeyPressed -= rotate;
     }
 }

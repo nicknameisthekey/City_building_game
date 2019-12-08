@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Road : Building, INetwork
+public class Road : StandaloneBuilding, INetwork
 {
     Vector2Int[] nearbyIDs = new Vector2Int[4];
 
