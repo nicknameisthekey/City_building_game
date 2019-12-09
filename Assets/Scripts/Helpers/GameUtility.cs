@@ -4,6 +4,13 @@ using UnityEngine;
 
 public static class GameUtility
 {
+    public static Vector2Int[] NearbyIDs = new Vector2Int[4]
+    {
+         new Vector2Int(0, -1),
+         new Vector2Int(-1, 0),
+         new Vector2Int(0, 1),
+         new Vector2Int(1, 0)
+    };
     public static Vector2Int GetNearbyIDByDirection(Direction direction)
     {
         switch (direction)
@@ -43,7 +50,7 @@ public static class GameUtility
         var tileID = GetTileIDUnderMousePosition();
         if (CheckIDIfValid(tileID))
         {
-            return MapGenerator.Map[tileID.x, tileID.y];
+            return MapGenerator.TileMap[tileID.x, tileID.y];
         }
         else
             return null;
@@ -64,7 +71,7 @@ public static class GameUtility
     {
         if (CheckIDIfValid(ID))
         {
-            var roadTile = MapGenerator.Map[ID.x, ID.y] as TileWithBuilding;
+            var roadTile = MapGenerator.TileMap[ID.x, ID.y] as TileWithBuilding;
             if (roadTile != null) return roadTile.Building as Road;
         }
         return null;
@@ -80,7 +87,7 @@ public static class GameUtility
     public static Tile GetTileByID(Vector2Int ID)
     {
         if (CheckIDIfValid(ID))
-            return MapGenerator.Map[ID.x, ID.y];
+            return MapGenerator.TileMap[ID.x, ID.y];
         else return null;
     }
 

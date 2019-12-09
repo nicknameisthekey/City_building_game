@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
 {
+    public static bool MapCreated { get; private set; }
     [SerializeField] int _sideSize;
     [SerializeField] GameObject tile;
     [SerializeField] Sprite greenTile;
@@ -15,7 +16,7 @@ public class MapGenerator : MonoBehaviour
     public static event Action MapGenerated = delegate { };
 
     public static int SideSize { get; private set; }
-    public static Tile[,] Map { get; private set; }
+    public static Tile[,] TileMap { get; private set; }
     float MapOffsetX;
     float MapOffsetY;
     private void Awake()
@@ -23,7 +24,8 @@ public class MapGenerator : MonoBehaviour
         MapOffsetX = _sideSize * 0.5f;
         MapOffsetY = _sideSize * 0.25f;
         SideSize = _sideSize;
-        Map = new Tile[_sideSize, _sideSize];
+        TileMap = new Tile[_sideSize, _sideSize];
+        Map.Initialize(_sideSize);
         generateTileMap();
     }
     void generateTileMap()
@@ -44,6 +46,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
         MapGenerated.Invoke();
+        MapCreated = true;
     }
     void placeTile(int x, int y, Sprite sprite)
     {
@@ -55,7 +58,7 @@ public class MapGenerator : MonoBehaviour
 
         GO = Instantiate(tile, new Vector3(realX, realY, 0), Quaternion.identity, transformToAttachTiles);
         GO.GetComponent<SpriteRenderer>().sprite = sprite;
-        Map[x, y] = new Tile(GO, new Vector2Int(x, y));
+        TileMap[x, y] = new Tile(GO, new Vector2Int(x, y));
         GO.name = "Tile " + x + ":" + y;
     }
 }

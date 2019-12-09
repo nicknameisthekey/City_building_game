@@ -46,7 +46,7 @@ public class BuildingPlacer : MonoBehaviour
             bool canPlace;
             if (GameUtility.GetTileIDUnderMousePosition(out Vector2Int tileID))
             {
-                currentGO.transform.position = MapGenerator.Map[tileID.x, tileID.y].TileGo.transform.position;
+                currentGO.transform.position = MapGenerator.TileMap[tileID.x, tileID.y].TileGo.transform.position;
                 canPlace = canPlaceHere(building, tileID);
             }
             else
@@ -61,7 +61,7 @@ public class BuildingPlacer : MonoBehaviour
             //  else Debug.Log("cannot");
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject() && canPlace)
             {
-                place(building, tileID);
+                place(tileID);
                 break;
             }
             yield return new WaitForEndOfFrame();
@@ -69,7 +69,7 @@ public class BuildingPlacer : MonoBehaviour
     }
     bool canPlaceHere(Building building, Vector2Int currentPos)
     {
-        if (MapGenerator.Map[currentPos.x, currentPos.y] is TileWithBuilding)
+        if (MapGenerator.TileMap[currentPos.x, currentPos.y] is TileWithBuilding)
         {
             //Debug.Log("tile with building or current pos was not valid");
             return false;
@@ -91,19 +91,19 @@ public class BuildingPlacer : MonoBehaviour
         GameObject.Destroy(currentGO);
         StopedConstructing.Invoke();
     }
-    static void place(Building building, Vector2Int tileID)
+    static void place(Vector2Int tileID)
     {
-        GameObject.Destroy(MapGenerator.Map[tileID.x, tileID.y].TileGo);
-        building.Initialize(tileID);
-        MapGenerator.Map[tileID.x, tileID.y] = new TileWithBuilding(currentGO, tileID, building);
+
+        currentBuilding.Initialize(tileID);
+        Map.PlaceBuildingOnMap(currentGO, currentBuilding, tileID);
         currentBuilding = null;
         StopedConstructing.Invoke();
     }
     public static void PlaceInstantly(GameObject PrefabToPlace, Vector2Int tileID)
     {
-        currentGO = Instantiate(PrefabToPlace, MapGenerator.Map[tileID.x, tileID.y].TileGo.transform.position, Quaternion.identity);
-        Building building = currentGO.GetComponent<Building>();
-        place(building, tileID);
+        currentGO = Instantiate(PrefabToPlace, MapGenerator.TileMap[tileID.x, tileID.y].TileGo.transform.position, Quaternion.identity);
+        currentBuilding = currentGO.GetComponent<Building>();
+        place(tileID);
     }
     static void onStopConstruction()
     {

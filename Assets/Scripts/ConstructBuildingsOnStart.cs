@@ -7,14 +7,18 @@ public class ConstructBuildingsOnStart : MonoBehaviour
     [SerializeField] List<BuildingWithCoords> buildingsToAdd;
     private void Awake()
     {
-        MapGenerator.MapGenerated += ConstructOnStart;
+        if (MapGenerator.MapCreated)
+            ConstructOnStart();
+        else
+            MapGenerator.MapGenerated += ConstructOnStart;
     }
     public void ConstructOnStart()
     {
+        Debug.Log("asdasd");
         foreach (var building in buildingsToAdd)
         {
             if (building.BuildingPrefab != null)
-            BuildingPlacer.PlaceInstantly(building.BuildingPrefab, building.TileIDToPlace);
+                BuildingPlacer.PlaceInstantly(building.BuildingPrefab, building.TileIDToPlace);
         }
     }
 }

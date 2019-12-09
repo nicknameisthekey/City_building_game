@@ -27,7 +27,7 @@ public class Road : StandaloneBuilding, INetwork
     {
         foreach (var id in nearbyIDs)
         {
-            var nearbyRoad = checkTileForRoad(MapGenerator.Map[id.x, id.y]);
+            var nearbyRoad = checkTileForRoad(MapGenerator.TileMap[id.x, id.y]);
             if (nearbyRoad != null)
             {
                 if (_currentNetwork == null)
@@ -58,7 +58,7 @@ public class Road : StandaloneBuilding, INetwork
     {
         foreach (var id in nearbyIDs)
         {
-            ActiveBuilding building = checkTileForActiveBuilding(MapGenerator.Map[id.x, id.y]);
+            ActiveBuilding building = checkTileForActiveBuilding(MapGenerator.TileMap[id.x, id.y]);
             //после удаления дороги проверка новой на стоящие дома
             if (building != null && building.TileID + building.RoadConnectionPoint == TileID)
             {
