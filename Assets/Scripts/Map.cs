@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Map
 {
+    public static event Action<StorageBuilding> NewStorageBuildingPlaced = delegate { };
     public static Node[,] RoadMap { get; private set; }
+    public static List<StorageBuilding> StorageBuildings = new List<StorageBuilding>();
     public static void Initialize(int sideSize)
     {
         RoadMap = new Node[sideSize, sideSize];
@@ -19,6 +22,12 @@ public class Map
         if (building is Road)
         {
             RoadMap[tileID.x, tileID.y] = new Node(true, GO.transform.position, tileID.x, tileID.y);
+        }
+        else if (building is StorageBuilding)
+        {
+            StorageBuilding st = (StorageBuilding)building;
+            NewStorageBuildingPlaced.Invoke(st);
+            StorageBuildings.Add(st);
         }
 
     }

@@ -93,8 +93,15 @@ public class BuildingPlacer : MonoBehaviour
     }
     static void place(Vector2Int tileID)
     {
-
-        currentBuilding.Initialize(tileID);
+        if (currentBuilding is StandaloneBuilding)
+        {
+            currentBuilding.Initialize(tileID);
+        }
+        else if (currentBuilding is BuildingNearRoad)
+        {
+            BuildingNearRoad bnr = (BuildingNearRoad)currentBuilding;
+            bnr.Initialize(tileID, tileID + GameUtility.GetNearbyIDByDirection(currentRotation));
+        }
         Map.PlaceBuildingOnMap(currentGO, currentBuilding, tileID);
         currentBuilding = null;
         StopedConstructing.Invoke();

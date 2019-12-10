@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class BuildingNearRoad : Building
 {
-    protected Vector2Int _roadConnectionPoint;
-    public Vector2Int RoadConnectionPoint => _roadConnectionPoint;
-    public virtual void Initialize(Vector2Int tileID, Vector2Int roadConntectionPoint)
+    protected Vector2Int _roadIDItConnects;
+    public Vector2Int RoadIDItConnects => _roadIDItConnects;
+    protected Road roadItConnects;
+    public virtual void Initialize(Vector2Int tileID, Vector2Int roadIDItConnects)
     {
         base.Initialize(tileID);
-        _roadConnectionPoint = roadConntectionPoint;
+        _roadIDItConnects = roadIDItConnects;
+        roadItConnects = GameUtility.GetRoadByID(roadIDItConnects);
     }
 }

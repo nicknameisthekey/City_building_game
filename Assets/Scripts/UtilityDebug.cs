@@ -52,6 +52,12 @@ public class UtilityDebug : MonoBehaviour
                     }
             }
         }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            TileWithBuilding t = (TileWithBuilding)GameUtility.GetTileUnderMousePosition();
+            BuildingNearRoad b = (BuildingNearRoad)t.Building;
+            Debug.Log(GameUtility.GetTileIDUnderMousePosition() + " " + b.RoadIDItConnects);
+        }
 
     }
 }

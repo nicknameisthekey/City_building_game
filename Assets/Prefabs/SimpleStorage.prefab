@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4172747027967286495}
   - component: {fileID: -8327077733253187594}
   m_Layer: 0
-  m_Name: Test
+  m_Name: SimpleStorage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,12 +69,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 27
-  m_Sprite: {fileID: 21300000, guid: 24b14a6757f0b7647b0888c246bf0240, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 4b981325158afd74c9f640ef316dbfce, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 0.5}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -92,7 +92,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2fa832f10a77e04b92bd2eb4ca46ec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _size: {x: 1, y: 1}
+  sprites:
+  - {fileID: 21300000, guid: 7f3bdce8f812dec4b800741df28bc48e, type: 3}
+  - {fileID: 21300000, guid: b1fb08699fdc5ae408a8a0193ca97ac9, type: 3}
+  - {fileID: 21300000, guid: 4b981325158afd74c9f640ef316dbfce, type: 3}
+  - {fileID: 21300000, guid: 819a441b1d8395a47a8d3bd9613ce447, type: 3}
   _acceptableTypes: 03000000
   _capacity: 1
-  _roadConnectionPoint: {x: 1, y: 0}

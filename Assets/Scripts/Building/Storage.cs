@@ -19,7 +19,7 @@ public class Storage
         Capacity = capacity;
     }
 
-    public void ChangeRecourceAmount(RecourceType type, float amount)
+    void changeRecourceAmount(RecourceType type, float amount)
     {
         if (Recources.ContainsKey(type))
         {
@@ -32,13 +32,20 @@ public class Storage
         TotalAmountOfGoods += amount;
         RecourceChanged.Invoke(type, Recources[type], this);
     }
-    public bool AddRecource(RecourceType type, float amount)
+    //переделать! дыры в логике!
+    public void AddRecource(RecourceType type, float amount)
+    {
+        if (CanAddRecource(type, amount))
+            changeRecourceAmount(type, amount);
+        else
+            Debug.Log("впихиваю невпихуемое");
+    }
+    public bool CanAddRecource(RecourceType type, float amount)
     {
         if (AcceptableTypes.Contains(type) || AcceptableTypes.Contains(RecourceType.all))
         {
-            if (TotalAmountOfGoods + amount <= Capacity)
+            if (TotalAmountOfGoods + amount <= Capacity && TotalAmountOfGoods + amount >= 0)
             {
-                ChangeRecourceAmount(type, amount);
                 return true;
             }
         }
