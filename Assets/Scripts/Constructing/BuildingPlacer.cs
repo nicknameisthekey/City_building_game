@@ -46,7 +46,7 @@ public class BuildingPlacer : MonoBehaviour
             bool canPlace;
             if (GameUtility.GetTileIDUnderMousePosition(out Vector2Int tileID))
             {
-                currentGO.transform.position = MapGenerator.TileMap[tileID.x, tileID.y].TileGo.transform.position;
+                currentGO.transform.position = Map.TileMap[tileID.x, tileID.y].TileGo.transform.position;
                 canPlace = canPlaceHere(building, tileID);
             }
             else
@@ -69,7 +69,7 @@ public class BuildingPlacer : MonoBehaviour
     }
     bool canPlaceHere(Building building, Vector2Int currentPos)
     {
-        if (MapGenerator.TileMap[currentPos.x, currentPos.y] is TileWithBuilding)
+        if (Map.TileMap[currentPos.x, currentPos.y] is TileWithBuilding)
         {
             //Debug.Log("tile with building or current pos was not valid");
             return false;
@@ -108,7 +108,7 @@ public class BuildingPlacer : MonoBehaviour
     }
     public static void PlaceInstantly(GameObject PrefabToPlace, Vector2Int tileID)
     {
-        currentGO = Instantiate(PrefabToPlace, MapGenerator.TileMap[tileID.x, tileID.y].TileGo.transform.position, Quaternion.identity);
+        currentGO = Instantiate(PrefabToPlace, Map.TileMap[tileID.x, tileID.y].TileGo.transform.position, Quaternion.identity);
         currentBuilding = currentGO.GetComponent<Building>();
         place(tileID);
     }

@@ -129,13 +129,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 385299409}
+  - component: {fileID: 385299413}
   - component: {fileID: 385299408}
   - component: {fileID: 385299411}
   - component: {fileID: 385299412}
   - component: {fileID: 385299410}
-  - component: {fileID: 385299413}
   - component: {fileID: 385299415}
-  - component: {fileID: 385299414}
   m_Layer: 0
   m_Name: ' --- Scripts ---'
   m_TagString: Untagged
@@ -155,11 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c7ec7583fc9c894f8e80157be9f350a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sideSize: 64
-  tile: {fileID: 5588494991181699200, guid: a0b5c68c08f35484180cc4a05dc383e9, type: 3}
+  tilePrefab: {fileID: 5588494991181699200, guid: a0b5c68c08f35484180cc4a05dc383e9,
+    type: 3}
   greenTile: {fileID: 21300000, guid: 24b14a6757f0b7647b0888c246bf0240, type: 3}
   treeTile: {fileID: 21300000, guid: 3f5e10572912bc0498e4f082da6fb284, type: 3}
-  perlinNoiseSeed: 0.1
   transformToAttachTiles: {fileID: 1898928225}
 --- !u!4 &385299409
 Transform:
@@ -221,52 +219,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 385299407}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1c81190185bd1746a406b250ace0135, type: 3}
+  m_Script: {fileID: 11500000, guid: 161b72fbc4e02684e8b6989a7b508af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingsToAdd:
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
-      type: 3}
-    TileIDToPlace: {x: 30, y: 30}
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
-      type: 3}
-    TileIDToPlace: {x: 29, y: 30}
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
-      type: 3}
-    TileIDToPlace: {x: 31, y: 30}
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
-      type: 3}
-    TileIDToPlace: {x: 31, y: 31}
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
-      type: 3}
-    TileIDToPlace: {x: 31, y: 32}
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
-      type: 3}
-    TileIDToPlace: {x: 31, y: 33}
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
-      type: 3}
-    TileIDToPlace: {x: 31, y: 34}
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
-      type: 3}
-    TileIDToPlace: {x: 31, y: 35}
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
-      type: 3}
-    TileIDToPlace: {x: 32, y: 35}
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
-      type: 3}
-    TileIDToPlace: {x: 31, y: 30}
---- !u!114 &385299414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 385299407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 818a6a49402830943a0fff371dc13959, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 7443e5f0c41ebd641949d7b93d0a0397, type: 2}
+  mapGen: {fileID: 385299408}
+  CameraMovement: {fileID: 385299411}
 --- !u!114 &385299415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,6 +419,8 @@ MonoBehaviour:
   buildingUIPrefab: {fileID: 2541295802290966769, guid: 6afccabb7ac34c640abbdde5dfb5bbd7,
     type: 3}
   recourceInfoPrefab: {fileID: 187969808231423703, guid: 8e267ed35af49b34aa109a28cc63bc63,
+    type: 3}
+  staticRecourcePannelPrefab: {fileID: 6625171047890022085, guid: ab049a3da66e7474393d0af426713271,
     type: 3}
 --- !u!4 &1507594922
 Transform:

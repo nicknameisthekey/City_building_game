@@ -9,33 +9,51 @@ public class ActiveBuilding : BuildingNearRoad
 
     float timeElapsedFromTick;
     Coroutine tickingCour;
-
-    List<KeyValuePair<StorageBuilding, int>> avaliableStorages;
-    bool recourceSentToStorage = true;
-    [SerializeField] RecourceType recource;
-    [SerializeField] float amount;
+    enum productionStates { startCycle, inputUnavaliable, startProduction, inProduction, productionFinished, outputUnavaliable }
+    productionStates currentState = productionStates.startCycle;
+    List<KeyValuePair<StorageBuilding, int>> reachableStorages;
+    [SerializeField] List<RecourceType> recourceTypes;
+    [SerializeField] List<int> amounts;
+    Dictionary<RecourceType, int> inputRecources = new Dictionary<RecourceType, int>();
+    Dictionary<RecourceType, int> outputRecources = new Dictionary<RecourceType, int>();
+    bool inputRequired = false;
     StorageBuilding currentStorage;
     private void Awake()
     {
         checkIfAllSetRight();
+        fillRecourcesDictionaries();
+    }
+    void fillRecourcesDictionaries()
+    {
+        for (int i = 0; i < recourceTypes.Count; i++)
+        {
+            if (amounts[i] >= 0)
+                outputRecources.Add(recourceTypes[i], amounts[i]);
+            else
+            {
+                inputRecources.Add(recourceTypes[i], amounts[i]);
+                inputRequired = true;
+            }
+
+        }
     }
     public override void Initialize(Vector2Int tileID, Vector2Int roadConntectionPoint)
     {
         base.Initialize(tileID, roadConntectionPoint);
         Map.NewStorageBuildingPlaced += checkNewStorageBuildingForPathAvaliable;
-        findAvaliableStorages();
-        startTicking();
+        findReachableStorages();
+        productionCycle();
     }
-    void findAvaliableStorages()
+    void findReachableStorages()
     {
-        Dictionary<StorageBuilding, int> avaliableStoragesUnsorted = new Dictionary<StorageBuilding, int>();
+        Dictionary<StorageBuilding, int> reachableStoragesUnsorted = new Dictionary<StorageBuilding, int>();
         foreach (var st in Map.StorageBuildings)
         {
             var path = Pathfinding.FindPath(RoadIDItConnects, st.RoadIDItConnects);
             if (path != null)
-                avaliableStoragesUnsorted.Add(st, path.Count);
+                reachableStoragesUnsorted.Add(st, path.Count);
         }
-        avaliableStorages = avaliableStoragesUnsorted.OrderBy(d => d.Value).ToList();
+        reachableStorages = reachableStoragesUnsorted.OrderBy(d => d.Value).ToList();
     }
     void checkNewStorageBuildingForPathAvaliable(StorageBuilding storageBuilding)
     {
@@ -43,34 +61,107 @@ public class ActiveBuilding : BuildingNearRoad
         if (path != null)
         {
             KeyValuePair<StorageBuilding, int> kvp = new KeyValuePair<StorageBuilding, int>(storageBuilding, path.Count);
-            avaliableStorages.Add(kvp);
-            avaliableStorages = avaliableStorages.OrderBy(d => d.Value).ToList();
-            if (recourceSentToStorage == false)
-                tick();
+            reachableStorages.Add(kvp);
+            reachableStorages = reachableStorages.OrderBy(d => d.Value).ToList();
+            onStorageRecourcesChanged();
         }
     }
-    StorageBuilding getStorageToStoreRecource()
+    StorageBuilding getAvaliableStorage(Dictionary<RecourceType, int> recourcesToLook)
     {
-        foreach (var kvp in avaliableStorages)
+        foreach (var kvp in reachableStorages)
         {
-            if (kvp.Key.Storage.CanAddRecource(recource, amount))
+            if (kvp.Key.Storage.CanChangeRecources(recourcesToLook))
+            {
+                Debug.Log("в тру");
                 return kvp.Key;
+            }
+
         }
         return null;
     }
-    void startTicking()
+    void productionCycle()
     {
-        if (tickingCour == null && recourceSentToStorage)
+        switch (currentState)
         {
-            Debug.Log("запускаю корутину");
-            tickingCour = StartCoroutine(tickCour());
-        }
-        else
-        {
-            Debug.Log("cour already started or recources was not sent");
+            case productionStates.startCycle:
+                {
+                    if (inputRequired)
+                    {
+                        var storage = getAvaliableStorage(inputRecources);
+                        if (storage != null)
+                        {
+                            storage.Storage.ChangeRecources(inputRecources);
+                            currentState = productionStates.startProduction;
+                        }
+                        else
+                        {
+                            currentState = productionStates.inputUnavaliable;
+                            subscribeForStorageRecourcesChanged(true);
+                            return;
+                        }
+                    }
+                    else
+                        currentState = productionStates.startProduction;
+                    productionCycle();
+                    break;
+                }
+            case productionStates.inputUnavaliable:
+                {
+
+                    break;
+                }
+            case productionStates.startProduction:
+                {
+                    currentState = productionStates.inProduction;
+                    StartCoroutine(timerCour());
+                    break;
+                }
+            case productionStates.productionFinished:
+                {
+                    var storage = getAvaliableStorage(outputRecources);
+                    if (storage != null)
+                    {
+                        storage.Storage.ChangeRecources(outputRecources);
+                        currentState = productionStates.startCycle;
+                        productionCycle();
+                    }
+                    else
+                    {
+                        currentState = productionStates.outputUnavaliable;
+                        subscribeForStorageRecourcesChanged(true);
+                    }
+                    break;
+                }
+            default: break;
         }
     }
-    IEnumerator tickCour()
+    void subscribeForStorageRecourcesChanged(bool subscribe)
+    {
+        if (subscribe)
+            foreach (var kvp in reachableStorages)
+                kvp.Key.Storage.RecourcesChanged += onStorageRecourcesChanged;
+        else
+            foreach (var kvp in reachableStorages)
+                kvp.Key.Storage.RecourcesChanged -= onStorageRecourcesChanged;
+    }
+
+    void onStorageRecourcesChanged()
+    {
+        subscribeForStorageRecourcesChanged(false);
+        if (currentState == productionStates.inputUnavaliable)
+        {
+            currentState = productionStates.startCycle;
+            productionCycle();
+            return;
+        }
+        else if (currentState == productionStates.outputUnavaliable)
+        {
+            currentState = productionStates.productionFinished;
+            productionCycle();
+            return;
+        }
+    }
+    IEnumerator timerCour()
     {
         //  Debug.Log("на старте" + timeElapsedFromTick);
         while (timeElapsedFromTick <= TimeToTick)
@@ -81,25 +172,10 @@ public class ActiveBuilding : BuildingNearRoad
         }
         // Debug.Log("вышел из корутины");
         timeElapsedFromTick = 0;
-        tick();
+        currentState = productionStates.productionFinished;
+        productionCycle();
     }
-    void tick()
-    {
-        recourceSentToStorage = false;
-        tickingCour = null;
-        var storage = getStorageToStoreRecource();
-        if (storage != null)
-        {
-            storage.Storage.AddRecource(recource, amount);
-            recourceSentToStorage = true;
-            // Debug.Log("tick");
-            startTicking();
-        }
-        else
-        {
-            Debug.Log("нет доступных складов");
-        }
-    }
+
     void checkIfAllSetRight()
     {
         if (TimeToTick <= 0)

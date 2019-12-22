@@ -46,7 +46,7 @@ public class UtilityDebug : MonoBehaviour
                 if (path != null)
                     foreach (var n in path)
                     {
-                        TileWithBuilding t = (TileWithBuilding)MapGenerator.TileMap[n.gridX, n.gridY];
+                        TileWithBuilding t = (TileWithBuilding)Map.TileMap[n.gridX, n.gridY];
                         t.TileGo.SetActive(false);
                         // Debug.Log(n.gridX + "," + n.gridY);
                     }

@@ -36,7 +36,7 @@ public static class GameUtility
     {
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Debug.Log(IsometricToCarestian(mousePos.x, mousePos.y, MapGenerator.SideSize));
-        return IsometricToTileID(mousePos.x, mousePos.y, MapGenerator.SideSize);
+        return IsometricToTileID(mousePos.x, mousePos.y, Map.MapSideSize);
     }
     public static bool GetTileIDUnderMousePosition(out Vector2Int ID)
     {
@@ -50,7 +50,7 @@ public static class GameUtility
         var tileID = GetTileIDUnderMousePosition();
         if (CheckIDIfValid(tileID))
         {
-            return MapGenerator.TileMap[tileID.x, tileID.y];
+            return Map.TileMap[tileID.x, tileID.y];
         }
         else
             return null;
@@ -63,7 +63,7 @@ public static class GameUtility
     }
     public static bool CheckIDIfValid(Vector2Int ID)
     {
-        if (ID.x >= 0 && ID.y >= 0 && ID.x <= MapGenerator.SideSize - 1 && ID.y <= MapGenerator.SideSize - 1)
+        if (ID.x >= 0 && ID.y >= 0 && ID.x <= Map.MapSideSize - 1 && ID.y <= Map.MapSideSize - 1)
             return true;
         return false;
     }
@@ -71,7 +71,7 @@ public static class GameUtility
     {
         if (CheckIDIfValid(ID))
         {
-            var roadTile = MapGenerator.TileMap[ID.x, ID.y] as TileWithBuilding;
+            var roadTile = Map.TileMap[ID.x, ID.y] as TileWithBuilding;
             if (roadTile != null) return roadTile.Building as Road;
         }
         return null;
@@ -87,7 +87,7 @@ public static class GameUtility
     public static Tile GetTileByID(Vector2Int ID)
     {
         if (CheckIDIfValid(ID))
-            return MapGenerator.TileMap[ID.x, ID.y];
+            return Map.TileMap[ID.x, ID.y];
         else return null;
     }
 

@@ -6,12 +6,9 @@ public class CameraMovement : MonoBehaviour
 {
     [SerializeField] float mouseWheelSpeed;
     private Vector3 lastFramePos;
-    private void Awake()
+    public void Initialize()
     {
-        if (MapGenerator.TileMap == null)
-            MapGenerator.MapGenerated += moveCameraToMapCenter;
-        else
-            moveCameraToMapCenter();
+        moveCameraToMapCenter();
     }
     private void Update()
     {
@@ -31,7 +28,7 @@ public class CameraMovement : MonoBehaviour
     }
     void moveCameraToMapCenter()
     {
-        Vector2 center = MapGenerator.TileMap[(int)MapGenerator.SideSize / 2, (int)MapGenerator.SideSize / 2].TileGo.transform.position;
+        Vector2 center = Map.TileMap[(int)Map.MapSideSize/ 2, (int)Map.MapSideSize/ 2].TileGo.transform.position;
         Camera.main.transform.position = new Vector3(center.x, center.y, Camera.main.transform.position.z);
     }
 }

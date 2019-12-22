@@ -37,7 +37,7 @@ public class StorageInfo : MonoBehaviour
         currentStorage = storage;
         storage.RecourceChanged += UpdateRecourceInfo;
     }
-    public static void UpdateRecourceInfo(RecourceType type, float amount, Storage storage)
+    public static void UpdateRecourceInfo(RecourceType type, int amount, Storage storage)
     {
         recourceImages[type].ChangeRecourceText(amount.ToString());
         instance.totalStorageAmountText.text = "Заполненность склада: " + storage.TotalAmountOfGoods + "/" + storage.Capacity;

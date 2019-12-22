@@ -7,9 +7,11 @@ public class UIManager : MonoBehaviour
     static UIManager instance;
     [SerializeField] GameObject buildingUIPrefab;
     [SerializeField] GameObject recourceInfoPrefab;
+    [SerializeField] GameObject staticRecourcePannelPrefab;
     Transform UITransform;
     static GameObject _buildingUI;
     static GameObject _recourceInfoPrefab;
+    static GameObject _staticRecourcesPanel;
 
 
 
@@ -25,6 +27,7 @@ public class UIManager : MonoBehaviour
         _buildingUI = Instantiate(buildingUIPrefab, UITransform);
         _recourceInfoPrefab = Instantiate(recourceInfoPrefab, UITransform);
         _recourceInfoPrefab.SetActive(false);
+        _staticRecourcesPanel = Instantiate(staticRecourcePannelPrefab, UITransform);
     }
 
 

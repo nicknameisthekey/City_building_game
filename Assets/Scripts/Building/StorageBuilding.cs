@@ -5,7 +5,7 @@ using UnityEngine;
 public class StorageBuilding : BuildingNearRoad
 {
     [SerializeField] List<RecourceType> _acceptableTypes;
-    [SerializeField] float _capacity;
+    [SerializeField] int _capacity;
 
     public Storage Storage { get; private set; }
     public override void Initialize(Vector2Int tileID, Vector2Int roadConnectionPoint)

@@ -84,7 +84,7 @@ public class Pathfinding
     {
         get
         {
-            return MapGenerator.SideSize * 2;
+            return Map.MapSideSize * 2;
         }
     }
     public static List<Node> GetNeighbours(Node node)
@@ -100,7 +100,7 @@ public class Pathfinding
             int checkY = node.gridY + id.y;
             //Debug.Log(node.gridX + "," + node.gridY + "+" + id);
             //Debug.Log(checkX + "," + checkY);
-            if (checkX >= 0 && checkX < MapGenerator.SideSize && checkY >= 0 && checkY < MapGenerator.SideSize)
+            if (checkX >= 0 && checkX < Map.MapSideSize && checkY >= 0 && checkY < Map.MapSideSize)
             {
                 neighbours.Add(Map.RoadMap[checkX, checkY]);
             }

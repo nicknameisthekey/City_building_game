@@ -5,21 +5,22 @@ using UnityEngine;
 
 public class Storage
 {
-    public Dictionary<RecourceType, float> Recources { get; private set; } = new Dictionary<RecourceType, float>();
-    public event Action<RecourceType, float, Storage> RecourceChanged = delegate { };
+    public Dictionary<RecourceType, int> Recources { get; private set; } = new Dictionary<RecourceType, int>();
+    public event Action<RecourceType, int, Storage> RecourceChanged = delegate { };
+    public event Action RecourcesChanged = delegate { };
 
     public List<RecourceType> AcceptableTypes { get; private set; }
-    public float Capacity { get; private set; } = 0;
-    public float TotalAmountOfGoods { get; private set; } = 0;
+    public int Capacity { get; private set; } = 0;
+    public int TotalAmountOfGoods { get; private set; } = 0;
 
     public Storage() { }
-    public Storage(List<RecourceType> acceptableTypes, float capacity)
+    public Storage(List<RecourceType> acceptableTypes, int capacity)
     {
         AcceptableTypes = acceptableTypes;
         Capacity = capacity;
     }
 
-    void changeRecourceAmount(RecourceType type, float amount)
+    void changeRecourceAmount(RecourceType type, int amount)
     {
         if (Recources.ContainsKey(type))
         {
@@ -31,24 +32,37 @@ public class Storage
         }
         TotalAmountOfGoods += amount;
         RecourceChanged.Invoke(type, Recources[type], this);
+        RecourcesChanged.Invoke();
     }
     //переделать! дыры в логике!
-    public void AddRecource(RecourceType type, float amount)
+    public void ChangeRecource(RecourceType type, int amount)
     {
-        if (CanAddRecource(type, amount))
+        if (CanChangeRecource(type, amount))
             changeRecourceAmount(type, amount);
         else
             Debug.Log("впихиваю невпихуемое");
     }
-    public bool CanAddRecource(RecourceType type, float amount)
+    public void ChangeRecources(Dictionary<RecourceType, int> recourcesToAdd)
     {
-        if (AcceptableTypes.Contains(type) || AcceptableTypes.Contains(RecourceType.all))
-        {
-            if (TotalAmountOfGoods + amount <= Capacity && TotalAmountOfGoods + amount >= 0)
-            {
-                return true;
-            }
-        }
+        if (CanChangeRecources(recourcesToAdd))
+            foreach (var kvp in recourcesToAdd)
+                changeRecourceAmount(kvp.Key, kvp.Value);
+    }
+    public bool CanChangeRecource(RecourceType type, int amount)
+    {
+        if (amount < 0 && Recources.ContainsKey(type) && Recources[type] + amount >= 0)
+            return true;
+        if (amount >= 0 && (AcceptableTypes.Contains(type) || AcceptableTypes.Contains(RecourceType.all)) && TotalAmountOfGoods + amount <= Capacity)
+            return true;
         return false;
+    }
+    public bool CanChangeRecources(Dictionary<RecourceType, int> recourcesToAdd)
+    {
+        foreach (var kvp in recourcesToAdd)
+        {
+            if (!CanChangeRecource(kvp.Key, kvp.Value))
+                return false;
+        }
+        return true;
     }
 }
