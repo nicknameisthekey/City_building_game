@@ -97,5 +97,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b1fb08699fdc5ae408a8a0193ca97ac9, type: 3}
   - {fileID: 21300000, guid: 4b981325158afd74c9f640ef316dbfce, type: 3}
   - {fileID: 21300000, guid: 819a441b1d8395a47a8d3bd9613ce447, type: 3}
-  _acceptableTypes: 03000000
-  _capacity: 10
+  _acceptableTypes: 00000000
+  _capacity: 5

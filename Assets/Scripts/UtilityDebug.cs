@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class UtilityDebug : MonoBehaviour
 {
+    public static event Action CloseAllWindows = delegate { };
     Vector2Int first;
     void Update()
     {
@@ -15,11 +17,15 @@ public class UtilityDebug : MonoBehaviour
                 if (tile is TileWithBuilding)
                 {
                     TileWithBuilding tileWithBuilding = (TileWithBuilding)tile;
-                    Debug.Log("В тайле по адресу " + tile.TileID);
                     if (tileWithBuilding.Building is StorageBuilding)
                     {
                         StorageBuilding storageBuilding = (StorageBuilding)tileWithBuilding.Building;
                         StorageInfo.ShowRecources(storageBuilding.Storage);
+                    }
+                    else if (tileWithBuilding.Building is ActiveBuildingNew)
+                    {
+                        ActiveBuildingNew ab = (ActiveBuildingNew)tileWithBuilding.Building;
+                        ActiveBuildingUI.ShowUI(ab);
                     }
                 }
                 else
@@ -30,7 +36,7 @@ public class UtilityDebug : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            StorageInfo.HideRecourceInfo();
+            CloseAllWindows.Invoke();
         }
         if (Input.GetKeyDown(KeyCode.J) && !EventSystem.current.IsPointerOverGameObject())
         {

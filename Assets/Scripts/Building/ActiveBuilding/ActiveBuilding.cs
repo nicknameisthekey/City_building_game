@@ -63,7 +63,7 @@ public class ActiveBuilding : BuildingNearRoad
             KeyValuePair<StorageBuilding, int> kvp = new KeyValuePair<StorageBuilding, int>(storageBuilding, path.Count);
             reachableStorages.Add(kvp);
             reachableStorages = reachableStorages.OrderBy(d => d.Value).ToList();
-            onStorageRecourcesChanged();
+            onStorageRecourcesChanged(new Storage());
         }
     }
     StorageBuilding getAvaliableStorage(Dictionary<RecourceType, int> recourcesToLook)
@@ -72,7 +72,7 @@ public class ActiveBuilding : BuildingNearRoad
         {
             if (kvp.Key.Storage.CanChangeRecources(recourcesToLook))
             {
-                Debug.Log("в тру");
+                //Debug.Log("в тру");
                 return kvp.Key;
             }
 
@@ -145,7 +145,7 @@ public class ActiveBuilding : BuildingNearRoad
                 kvp.Key.Storage.RecourcesChanged -= onStorageRecourcesChanged;
     }
 
-    void onStorageRecourcesChanged()
+    void onStorageRecourcesChanged(Storage storage)
     {
         subscribeForStorageRecourcesChanged(false);
         if (currentState == productionStates.inputUnavaliable)

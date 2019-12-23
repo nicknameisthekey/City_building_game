@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 385299412}
   - component: {fileID: 385299410}
   - component: {fileID: 385299415}
+  - component: {fileID: 385299414}
   m_Layer: 0
   m_Name: ' --- Scripts ---'
   m_TagString: Untagged
@@ -225,6 +226,18 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 7443e5f0c41ebd641949d7b93d0a0397, type: 2}
   mapGen: {fileID: 385299408}
   CameraMovement: {fileID: 385299411}
+--- !u!114 &385299414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385299407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff5fd8387defa3445bd352083795efbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &385299415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,6 +434,8 @@ MonoBehaviour:
   recourceInfoPrefab: {fileID: 187969808231423703, guid: 8e267ed35af49b34aa109a28cc63bc63,
     type: 3}
   staticRecourcePannelPrefab: {fileID: 6625171047890022085, guid: ab049a3da66e7474393d0af426713271,
+    type: 3}
+  activebuildingUIPrefab: {fileID: 6407696521925313565, guid: edf61e742fef5084a80fcda1b6e8f0b9,
     type: 3}
 --- !u!4 &1507594922
 Transform:

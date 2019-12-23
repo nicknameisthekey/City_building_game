@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3637884929772818047}
   - component: {fileID: 199010078774348722}
-  - component: {fileID: 6978686878025432373}
+  - component: {fileID: -7279673733586372897}
   m_Layer: 0
   m_Name: StoneHouse
   m_TagString: Untagged
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6978686878025432373
+--- !u!114 &-7279673733586372897
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 565860393450820772}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d4400b1fb48b09499c26536926082ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d11b1397fcba284fb9ec041b6b501a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
@@ -97,5 +97,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 855bee57083ab3b438e65f7719f78d6a, type: 3}
   - {fileID: 21300000, guid: 855bee57083ab3b438e65f7719f78d6a, type: 3}
   - {fileID: 21300000, guid: 855bee57083ab3b438e65f7719f78d6a, type: 3}
-  StaticRecourcesTypes: 0000000001000000
-  Amounts: feffffff0a000000
+  TimeToTick: 2
+  recourceTypes: 00000000
+  amounts: 01000000

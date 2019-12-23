@@ -29,7 +29,6 @@ public class MapGenerator : MonoBehaviour
     }
     public Tile[,] generateTileMap()
     {
-        Debug.Log(mapSideSize);
         for (int x = 0; x < mapSideSize; x++)
         {
             for (int y = 0; y < mapSideSize; y++)
@@ -50,8 +49,8 @@ public class MapGenerator : MonoBehaviour
     void placeTile(int x, int y, Sprite sprite)
     {
         GameObject GO;
-        float realY = (x - y) * 0.5f + mapOffsetX; 
-        float realX = (x + y) * 0.25f + mapOffsetY; 
+        float realX = (x - y) * 0.5f + mapOffsetX; 
+        float realY = (x + y) * 0.25f + mapOffsetY; 
 
         GO = Instantiate(tilePrefab, new Vector3(realX, realY, 0), Quaternion.identity, transformToAttachTiles);
         GO.GetComponent<SpriteRenderer>().sprite = sprite;

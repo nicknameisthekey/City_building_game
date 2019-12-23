@@ -2,8 +2,8 @@
 
 public enum RecourceType
 {
-    wood,
-    food,
-    rawFood,
+    wood = 0,
+    food =1,
+    rawFood=2,
     all
 }

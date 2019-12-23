@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class GameUtility
@@ -89,6 +90,21 @@ public static class GameUtility
         if (CheckIDIfValid(ID))
             return Map.TileMap[ID.x, ID.y];
         else return null;
+    }
+    public static List<KeyValuePair<StorageBuilding, int>> FindAllReachableStorages(Vector2Int startRoadPoint)
+    {
+        Dictionary<StorageBuilding, int> reachableStoragesUnsorted = new Dictionary<StorageBuilding, int>();
+
+        foreach (var st in Map.StorageBuildings)
+        {
+            var path = Pathfinding.FindPath(startRoadPoint, st.RoadIDItConnects);
+            if (path != null)
+                reachableStoragesUnsorted.Add(st, path.Count);
+        }
+        if (reachableStoragesUnsorted.Count == 0)
+            return null;
+        return reachableStoragesUnsorted.OrderBy(d => d.Value).ToList();
+
     }
 
 }

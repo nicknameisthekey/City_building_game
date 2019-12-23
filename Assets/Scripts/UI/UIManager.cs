@@ -8,11 +8,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject buildingUIPrefab;
     [SerializeField] GameObject recourceInfoPrefab;
     [SerializeField] GameObject staticRecourcePannelPrefab;
+    [SerializeField] GameObject activebuildingUIPrefab;
     Transform UITransform;
     static GameObject _buildingUI;
     static GameObject _recourceInfoPrefab;
     static GameObject _staticRecourcesPanel;
-
+    static GameObject _activeBuildingUI;
 
 
     private void Awake()
@@ -28,6 +29,7 @@ public class UIManager : MonoBehaviour
         _recourceInfoPrefab = Instantiate(recourceInfoPrefab, UITransform);
         _recourceInfoPrefab.SetActive(false);
         _staticRecourcesPanel = Instantiate(staticRecourcePannelPrefab, UITransform);
+        _activeBuildingUI = Instantiate(activebuildingUIPrefab, UITransform);
     }
 
 

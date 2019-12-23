@@ -17,6 +17,7 @@ public class StorageInfo : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        UtilityDebug.CloseAllWindows += HideRecourceInfo;
         foreach (var item in Enum.GetValues(typeof(RecourceType)))
         {
             RecourceType rectype = (RecourceType)item;
@@ -56,9 +57,9 @@ public class StorageInfo : MonoBehaviour
     }
     public static void HideRecourceInfo()
     {
+        if (!instance.gameObject.activeSelf) return;
         instance.gameObject.SetActive(false);
         currentStorage.RecourceChanged -= UpdateRecourceInfo;
-
     }
     Sprite getRightSprite(RecourceType recource)
     {

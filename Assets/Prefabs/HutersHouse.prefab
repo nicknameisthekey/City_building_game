@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6268901673969142070}
   - component: {fileID: 6378652045958278303}
-  - component: {fileID: 4530044945077126197}
+  - component: {fileID: 1259810080002007564}
   m_Layer: 0
   m_Name: HutersHouse
   m_TagString: Untagged
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4530044945077126197
+--- !u!114 &1259810080002007564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4528967185937902003}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d4400b1fb48b09499c26536926082ac, type: 3}
+  m_Script: {fileID: 11500000, guid: c4b8c15949d78b74faa6ec3776dcb472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
@@ -97,5 +97,4 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0bf5c7bbcfb830240a16c9326d1a4b76, type: 3}
   - {fileID: 21300000, guid: 70524e6e8db15534fbbf433611a47cf4, type: 3}
   - {fileID: 21300000, guid: 5c47551f84c1dad42873eb2126faf5e9, type: 3}
-  StaticRecourcesTypes: 00000000
-  Amounts: 02000000
+  _abParams: {fileID: 11400000, guid: dca6cedb73be73f4096ea774ebc2d775, type: 2}

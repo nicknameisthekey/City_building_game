@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468e4c57c048e2440af1c6287c9e1ce1, type: 3}
   m_Name: GameSettings1
   m_EditorClassIdentifier: 
-  _sideSize: 25
-  perlinNoiseSeed: 1
-  buildingsToAdd: []
+  _sideSize: 64
+  perlinNoiseSeed: 0.1
+  buildingsToAdd:
+  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
+      type: 3}
+    TileIDToPlace: {x: 32, y: 32}
+  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
+      type: 3}
+    TileIDToPlace: {x: 31, y: 32}

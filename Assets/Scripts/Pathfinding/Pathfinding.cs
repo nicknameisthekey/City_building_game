@@ -15,8 +15,9 @@ public class Pathfinding
         openSet.Add(startNode);
         if (start == target)
         {
-            Debug.Log("Start=Finish");
-            return null;
+            List<Node> l = new List<Node>();
+            l.Add(new Node(true, new Vector3(0, 0), start.x, start.y));
+            return l;
         }
 
         while (openSet.Count > 0)
