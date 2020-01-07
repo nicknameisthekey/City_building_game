@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(fileName = "New ActiveBuilding", menuName = "new ActiveBuilding Params", order = 51)]
+[CreateAssetMenu(fileName = "New ActiveBuilding", menuName = "ActiveBuilding Params", order = 51)]
 public class ActiveBuildingParams : ScriptableObject
 {
     [SerializeField] int ticksToProduce;
@@ -9,11 +9,13 @@ public class ActiveBuildingParams : ScriptableObject
     [SerializeField] List<Recource> constructRecources;
     [SerializeField] List<Recource> inputRecourceCapacity;
     [SerializeField] List<Recource> outputRecourceCapacity;
+    [SerializeField] List<StaticRecource> staticRecources;
     public List<Recource> ConstructRecources { get => constructRecources; }
     public Dictionary<RecourceType, int> InputRecources { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> OutputRecources { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> InputRecourceCapacity { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> OutputRecourceCapacity { get; private set; } = new Dictionary<RecourceType, int>();
+    public List<StaticRecource> StaticRecources { get => staticRecources; }
     public bool InputRequired { get; private set; } = false;
 
     private void OnEnable()
@@ -29,7 +31,7 @@ public class ActiveBuildingParams : ScriptableObject
             else
             {
                 InputRequired = true;
-                InputRecources.Add(r.Type, r.Amount);
+                InputRecources.Add(r.Type, -r.Amount);
             }
         }
         if (InputRequired)

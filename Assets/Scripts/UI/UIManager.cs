@@ -16,11 +16,12 @@ public class UIManager : MonoBehaviour
     static GameObject _activeBuildingUI;
 
 
-    private void Awake()
+    public void Initialize()
     {
         instance = this;
         UITransform = gameObject.transform;
         instantiateUI();
+        InputHandler.ShowInfoPressed += showBuildingInfo;
     }
 
     void instantiateUI()
@@ -31,6 +32,29 @@ public class UIManager : MonoBehaviour
         _staticRecourcesPanel = Instantiate(staticRecourcePannelPrefab, UITransform);
         _activeBuildingUI = Instantiate(activebuildingUIPrefab, UITransform);
     }
-
+    void showBuildingInfo()
+    {
+        if (GameUtility.GetTileUnderMousePosition(out Tile tile))
+        {
+            if (tile is TileWithBuilding)
+            {
+                TileWithBuilding tileWithBuilding = (TileWithBuilding)tile;
+                if (tileWithBuilding.Building is StorageBuilding)
+                {
+                    StorageBuilding storageBuilding = (StorageBuilding)tileWithBuilding.Building;
+                    StorageInfo.ShowRecources(storageBuilding.Storage);
+                }
+                else if (tileWithBuilding.Building is ActiveBuildingNew)
+                {
+                    ActiveBuildingNew ab = (ActiveBuildingNew)tileWithBuilding.Building;
+                    ActiveBuildingUI.ShowUI(ab);
+                }
+            }
+            else
+            {
+                Debug.Log("Тайл " + tile.TileID + " без строения");
+            }
+        }
+    }
 
 }

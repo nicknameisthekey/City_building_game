@@ -7,7 +7,7 @@ public class Map
 {
     public static event Action<StorageBuilding> NewStorageBuildingPlaced = delegate { };
 
-    public static List<StorageBuilding> StorageBuildings = new List<StorageBuilding>();
+    public static List<StorageBuilding> StorageBuildings { get; private set; } = new List<StorageBuilding>();
 
     public static Tile[,] TileMap { get; private set; }
     public static Node[,] RoadMap { get; private set; }

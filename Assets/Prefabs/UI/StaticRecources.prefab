@@ -215,6 +215,4 @@ MonoBehaviour:
   StaticRecourceImagePrefab: {fileID: 931595682272021977, guid: 0ac924a09878afd4fb87af139b908b0b,
     type: 3}
   Layout: {fileID: 1282546130479744035}
-  recourceSprites:
-  - {fileID: 21300000, guid: 628208cbc889470469ec45d87fc504ea, type: 3}
-  - {fileID: 21300000, guid: 855bee57083ab3b438e65f7719f78d6a, type: 3}
+  recourceSprites: {fileID: 11400000, guid: e3e84e5dbf8291346bbab1d451430433, type: 2}

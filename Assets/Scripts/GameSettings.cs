@@ -15,6 +15,11 @@ public class GameSettings : ScriptableObject
     #region ToDo_OnGameStart
     [SerializeField] List<BuildingWithCoords> buildingsToAdd;
     public List<BuildingWithCoords> BuildingsToAdd { get => buildingsToAdd; }
+
+    [SerializeField] List<Recource> startingRecources;
+    public List<Recource> Startingrecource { get => startingRecources; }
+    [SerializeField] List<StaticRecource> startingStaticRes;
+    public List<StaticRecource> StaringStaticRes { get => startingStaticRes; }
     #endregion
 
 }

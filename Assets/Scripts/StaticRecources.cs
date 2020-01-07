@@ -8,18 +8,19 @@ public static class StaticRecources
     static Dictionary<StaticRecourceType, int> recources = new Dictionary<StaticRecourceType, int>();
     public static event Action<StaticRecourceType> RecourceChanged = delegate { };
     public static event Action RecourcesChanged = delegate { };
-    public static void Initializtion(Dictionary<StaticRecourceType, int> addOnStart)
+    public static void Initializtion(List<StaticRecource> addOnStart)
     {
+
         foreach (var item in Enum.GetValues(typeof(StaticRecourceType)))
         {
             StaticRecourceType type = (StaticRecourceType)item;
             recources.Add(type, 0);
         }
-        foreach (var kvp in addOnStart)
+        foreach (var res in addOnStart)
         {
-            recources[kvp.Key] += kvp.Value;
+            recources[res.Type] += res.Amount;
             RecourcesChanged.Invoke();
-            RecourceChanged.Invoke(kvp.Key);
+            RecourceChanged.Invoke(res.Type);
         }
     }
     public static int GetAmount(StaticRecourceType type)
@@ -38,7 +39,7 @@ public static class StaticRecources
     }
     public static bool ChangeAmount(Dictionary<StaticRecourceType, int> recourcesToCheck)
     {
-        
+
         foreach (var kvp in recourcesToCheck)
         {
             if (recources[kvp.Key] + kvp.Value < 0)
@@ -46,7 +47,7 @@ public static class StaticRecources
         }
         foreach (var kvp in recourcesToCheck)
         {
-            Debug.Log(kvp.Key + " " +kvp.Value);
+            //Debug.Log(kvp.Key + " " + kvp.Value);
             recources[kvp.Key] += kvp.Value;
             RecourceChanged.Invoke(kvp.Key);
             RecourcesChanged.Invoke();

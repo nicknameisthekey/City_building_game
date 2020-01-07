@@ -9,17 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd61276b2b126fe42aab8aa359935cb4, type: 3}
-  m_Name: Hunter
+  m_Script: {fileID: 11500000, guid: f82f875da23a5e54c8eab6968a0d3233, type: 3}
+  m_Name: StaticReourceIcons
   m_EditorClassIdentifier: 
-  ticksToProduce: 3
-  recourcesProduction:
-  - Amount: 2
-    Type: 1
-  constructRecources:
-  - Amount: 1
-    Type: 0
-  inputRecourceCapacity: []
-  outputRecourceCapacity:
-  - Amount: 6
-    Type: 1
+  sprites:
+  - {fileID: 21300000, guid: 628208cbc889470469ec45d87fc504ea, type: 3}
+  - {fileID: 21300000, guid: 7c7daef5ea4f58941a26b3cde6e386f1, type: 3}

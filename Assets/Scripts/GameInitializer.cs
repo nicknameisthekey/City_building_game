@@ -5,18 +5,21 @@ public class GameInitializer : MonoBehaviour
     [SerializeField] GameSettings settings;
     [SerializeField] MapGenerator mapGen;
     [SerializeField] CameraMovement CameraMovement;
-
+    [SerializeField] UIManager UIManager;
     private void Start()
     {
         Tile[,] tileMap = mapGen.GenerateMap(settings);
         Map.Initialize(settings, tileMap);
+        StaticRecources.Initializtion(settings.StaringStaticRes);
         constructOnGameStart();
         CameraMovement.Initialize();
+        if (Map.StorageBuildings.Count != 0)
+        {
+            foreach(var res in settings.Startingrecource)
+            Map.StorageBuildings[0].Storage.AddMaximumAmount(res.Type, res.Amount, out int c);
+        }
+        UIManager.Initialize();
 
-        /* Dictionary<StaticRecourceType, int> atstart = new Dictionary<StaticRecourceType, int>();
-       atstart.Add(StaticRecourceType.people, 10);
-       StaticRecources.Initializtion(atstart);
-       */
     }
 
     private void constructOnGameStart()
@@ -24,7 +27,7 @@ public class GameInitializer : MonoBehaviour
         foreach (var building in settings.BuildingsToAdd)
         {
             if (building.BuildingPrefab != null)
-                BuildingPlacer.PlaceInstantly(building.BuildingPrefab, building.TileIDToPlace);
+                BuildingPlacer.PlaceInstantly(building.BuildingPrefab, building.TileIDToPlace, building.Direction);
         }
     }
 }

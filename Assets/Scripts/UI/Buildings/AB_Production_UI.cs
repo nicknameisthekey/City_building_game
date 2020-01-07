@@ -11,11 +11,19 @@ public class AB_Production_UI : MonoBehaviour
     [SerializeField] Transform outputLayout;
     [SerializeField] Transform outputStorageLayout;
     [SerializeField] Image progressBar;
+    [SerializeField] StartStopBTN startStopBTN;
+    [SerializeField] Transform inputStorageLayout;
+    GameObject[] inputStorageImages = new GameObject[4];
     GameObject[] outputImages = new GameObject[4];
     GameObject[] outputStorageImages = new GameObject[4];
     AB_State_ProductionCycle currentState;
     public void Initialize()
     {
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject image = Instantiate(imagePrefab, inputStorageLayout);
+            inputStorageImages[i] = image;
+        }
         for (int i = 0; i < 4; i++)
         {
             GameObject image = Instantiate(imagePrefab, outputLayout);
@@ -33,10 +41,13 @@ public class AB_Production_UI : MonoBehaviour
         if (currentState == null)
         {
             currentState = state;
+            startStopBTN.Initialize(state.building);
             gameObject.SetActive(true);
             state.OutputAdded += updateInfo;
             state.OutputSubstracted += updateInfo;
-            state.ab_Work.ProgressChanged += updateInfo;
+            state.Ab_Work.ProgressChanged += updateInfo;
+            state.InputSubstracted += updateInfo;
+            state.InputAdded += updateInfo;
             updateInfo();
         }
         else
@@ -48,6 +59,33 @@ public class AB_Production_UI : MonoBehaviour
     void updateInfo()
     {
         int i = 0;
+        if (currentState.building.AbParams.InputRequired)
+        {
+            var inputCapKVPS = currentState.building.AbParams.InputRecourceCapacity.ToList();
+            var inputKVPS = currentState.building.AbParams.InputRecources.ToList();
+
+            for (; i < inputCapKVPS.Count; i++)
+            {
+                inputStorageImages[i].SetActive(true);
+                inputStorageImages[i].GetComponent<Image>().sprite = recourceIcons.Sprites[(int)inputCapKVPS[i].Key];
+                inputStorageImages[i].GetComponentInChildren<Text>().text =
+                currentState.InputRecourcesLocal[inputCapKVPS[i].Key].ToString() + "/" +
+                inputCapKVPS[i].Value;
+            }
+            for (; i < 4; i++)
+            {
+                inputStorageImages[i].SetActive(false);
+            }
+        }
+        else
+        {
+            for (; i < 4; i++)
+            {
+                inputStorageImages[i].SetActive(false);
+            }
+        }
+
+        i = 0;
         var outputCapKVPS = currentState.building.AbParams.OutputRecourceCapacity.ToList();
         var outputKVPS = currentState.building.AbParams.OutputRecources.ToList();
         for (; i < outputKVPS.Count; i++)
@@ -55,7 +93,6 @@ public class AB_Production_UI : MonoBehaviour
             outputImages[i].SetActive(true);
             outputImages[i].GetComponent<Image>().sprite = recourceIcons.Sprites[(int)outputKVPS[i].Key];
             outputImages[i].GetComponentInChildren<Text>().text = outputKVPS[i].Value.ToString();
-
         }
         for (; i < 4; i++)
         {
@@ -74,7 +111,7 @@ public class AB_Production_UI : MonoBehaviour
         {
             outputStorageImages[i].SetActive(false);
         }
-        progressBar.GetComponent<Image>().fillAmount = (float)currentState.ab_Work.ticksDone / (float)currentState.ab_Work.ticksNeed;
+        progressBar.GetComponent<Image>().fillAmount = (float)currentState.Ab_Work.ticksDone / (float)currentState.Ab_Work.ticksNeed;
     }
     public void Close()
     {
@@ -82,7 +119,9 @@ public class AB_Production_UI : MonoBehaviour
         gameObject.SetActive(false);
         currentState.OutputAdded -= updateInfo;
         currentState.OutputSubstracted -= updateInfo;
-        currentState.ab_Work.ProgressChanged -= updateInfo;
+        currentState.Ab_Work.ProgressChanged -= updateInfo;
+        currentState.InputSubstracted -= updateInfo;
+        currentState.InputAdded -= updateInfo;
         currentState = null;
     }
 }

@@ -4,4 +4,5 @@ public class BuildingWithCoords
 {
     public GameObject BuildingPrefab;
     public Vector2Int TileIDToPlace;
+    public Direction Direction;
 }

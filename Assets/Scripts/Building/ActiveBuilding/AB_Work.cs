@@ -6,8 +6,11 @@ using UnityEngine;
 public class AB_Work
 {
     AB_State_ProductionCycle state;
+    AB_Input input;
+    AB_Output output;
     ActiveBuildingParams abParams;
-    public event Action ProgressChanged = delegate { }; 
+    bool workPermited = true;
+    public event Action ProgressChanged = delegate { };
     public AB_Work(AB_State_ProductionCycle state)
     {
         this.state = state; abParams = state.building.AbParams;
@@ -17,53 +20,45 @@ public class AB_Work
     public int ticksNeed { get; private set; }
     public void Initialization()
     {
-        if (state.building.AbParams.InputRequired)
-        {
-
-        }
-        else
-        {
-            startTicking();
-        }
+        output = state.Ab_Output;
+        input = state.AB_Input;
+        startTicking();
+    }
+    public void StartStop()
+    {
+        workPermited = !workPermited;
     }
     void startTicking()
     {
-        if (canPlaceMoreOutput())
+        input.ProductionAvaliable -= startTicking;
+        output.ProductionAvaliable -= startTicking;
+        if (output.ProductionFlag && input.ProductionFlag)
         {
-            state.OutputSubstracted -= startTicking;
+            Debug.Log(state.building.BuildingName + " начало произвоства");
+            state.substractInput();
             Timer.OneSecond += onTick;
+        }
+        else
+        {
+            input.ProductionAvaliable += startTicking;
+            output.ProductionAvaliable += startTicking;
+            Debug.Log(state.building.BuildingName + " input " + input.ProductionFlag + " output " + output.ProductionFlag);
         }
     }
     void onTick()
     {
-        ticksDone++;
-        ProgressChanged.Invoke();
-        Debug.Log(ticksDone);
-        if (ticksDone >= ticksNeed)
+        if (workPermited)
         {
-            ticksDone = 0;
-            createOutput();
+            ticksDone++;
+            ProgressChanged.Invoke();
+           // Debug.Log(ticksDone);
+            if (ticksDone >= ticksNeed)
+            {
+                ticksDone = 0;
+                Timer.OneSecond -= onTick;
+                output.AddOutput();
+                startTicking();
+            }
         }
-    }
-
-    void createOutput()
-    {
-        state.addOutput();
-        if (!canPlaceMoreOutput())
-        {
-            Timer.OneSecond -= onTick;
-            state.OutputSubstracted += startTicking;
-            Debug.Log("больше чем капасити");
-        }
-    }
-    bool canPlaceMoreOutput()
-    {
-        foreach (var kvp in state.OutputRecourcesLocal)
-        {
-            if (state.OutputRecourcesLocal[kvp.Key] + abParams.OutputRecources[kvp.Key] > abParams.OutputRecourceCapacity[kvp.Key])
-                //новый output превысит capacity
-                return false;
-        }
-        return true;
     }
 }

@@ -8,16 +8,14 @@ public class StorageInfo : MonoBehaviour
     [SerializeField] GameObject recourceImagePrefab;
     [SerializeField] Transform layout;
     [SerializeField] Text totalStorageAmountText;
-    [SerializeField] Sprite rawFood;
-    [SerializeField] Sprite food;
-    [SerializeField] Sprite wood;
+    [SerializeField] ImagesData recourceIcons;
     static Dictionary<RecourceType, RecourceImage> recourceImages = new Dictionary<RecourceType, RecourceImage>();
     static StorageInfo instance;
     static Storage currentStorage;
     private void Awake()
     {
         instance = this;
-        UtilityDebug.CloseAllWindows += HideRecourceInfo;
+        InputHandler.CloseAllWindowsPressed += HideRecourceInfo;
         foreach (var item in Enum.GetValues(typeof(RecourceType)))
         {
             RecourceType rectype = (RecourceType)item;
@@ -26,7 +24,7 @@ public class StorageInfo : MonoBehaviour
             var Image = Instantiate(recourceImagePrefab, layout);
             RecourceImage recImage = Image.GetComponent<RecourceImage>();
             recImage.ChangeRecourceText("0");
-            recImage.ChangeRecorceImage(getRightSprite(rectype));
+            recImage.ChangeRecorceImage(recourceIcons.Sprites[(int)rectype]);
             recourceImages.Add(rectype, recImage);
         }
     }
@@ -61,15 +59,4 @@ public class StorageInfo : MonoBehaviour
         instance.gameObject.SetActive(false);
         currentStorage.RecourceChanged -= UpdateRecourceInfo;
     }
-    Sprite getRightSprite(RecourceType recource)
-    {
-        switch (recource)
-        {
-            case RecourceType.food: return food;
-            case RecourceType.rawFood: return rawFood;
-            case RecourceType.wood: return wood;
-            default: return null;
-        }
-    }
-
 }

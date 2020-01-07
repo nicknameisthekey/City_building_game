@@ -90,13 +90,23 @@ PrefabInstance:
         type: 3}
     - target: {fileID: -8327077733253187594, guid: 9db5ee8dc56037747b182368992aca71,
         type: 3}
+      propertyPath: _acceptableTypes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8327077733253187594, guid: 9db5ee8dc56037747b182368992aca71,
+        type: 3}
       propertyPath: _capacity
-      value: 10
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: -8327077733253187594, guid: 9db5ee8dc56037747b182368992aca71,
         type: 3}
       propertyPath: _acceptableTypes.Array.data[0]
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8327077733253187594, guid: 9db5ee8dc56037747b182368992aca71,
+        type: 3}
+      propertyPath: _acceptableTypes.Array.data[1]
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9db5ee8dc56037747b182368992aca71, type: 3}

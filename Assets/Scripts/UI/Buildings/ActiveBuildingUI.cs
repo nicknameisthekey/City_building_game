@@ -11,7 +11,7 @@ public class ActiveBuildingUI : MonoBehaviour
         gameObject.SetActive(false);
         constructionUI.Initialize();
         production_UI.Initialize();
-        UtilityDebug.CloseAllWindows += closeAllWindows;
+        InputHandler.CloseAllWindowsPressed += closeAllWindows;
     }
     void closeAllWindows()
     {

@@ -17,7 +17,7 @@ public class MapGenerator : MonoBehaviour
     float mapOffsetX;
     float mapOffsetY;
     public Tile[,] tileMap;
-    
+
     public Tile[,] GenerateMap(GameSettings settings)
     {
         mapSideSize = settings.MapSideSize;
@@ -49,11 +49,12 @@ public class MapGenerator : MonoBehaviour
     void placeTile(int x, int y, Sprite sprite)
     {
         GameObject GO;
-        float realX = (x - y) * 0.5f + mapOffsetX; 
-        float realY = (x + y) * 0.25f + mapOffsetY; 
+        float realX = (x - y) * 0.5f + mapOffsetX;
+        float realY = (x + y) * 0.25f + mapOffsetY;
 
         GO = Instantiate(tilePrefab, new Vector3(realX, realY, 0), Quaternion.identity, transformToAttachTiles);
         GO.GetComponent<SpriteRenderer>().sprite = sprite;
+        GO.GetComponent<SpriteRenderer>().sortingOrder = Map.MapSideSize - x;
         GO.name = "Tile " + x + ":" + y;
         tileMap[x, y] = new Tile(GO, new Vector2Int(x, y));
     }

@@ -120,9 +120,7 @@ MonoBehaviour:
     type: 3}
   layout: {fileID: 496394973891286218}
   totalStorageAmountText: {fileID: 429928929202904518}
-  rawFood: {fileID: 21300000, guid: 3f5e10572912bc0498e4f082da6fb284, type: 3}
-  food: {fileID: 21300000, guid: 628208cbc889470469ec45d87fc504ea, type: 3}
-  wood: {fileID: 21300000, guid: 230e3300f1f56a6458d89c566aa62f95, type: 3}
+  recourceIcons: {fileID: 11400000, guid: 47b6a63792f081c46ba48d18cad6aa9e, type: 2}
 --- !u!1 &4076767439556447369
 GameObject:
   m_ObjectHideFlags: 0

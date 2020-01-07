@@ -25,7 +25,7 @@ public class AB_State_CollectingMaterials : ActiveBuildingState
         {
             if (AskAllStoragesForRecources())
             {
-                Debug.Log("собрали все ресурсы, смена стейта по первичной проверке");
+                Debug.Log(building.BuildingName + " строительство, собрали все ресурсы, смена стейта по первичной проверке");
                 unsubscribeFromStorages();
                 changeToNextState();
                 return;
@@ -92,7 +92,7 @@ public class AB_State_CollectingMaterials : ActiveBuildingState
     {
         if (recourcesLeftToDeliver.Count == 0)
         {
-            Debug.Log("все ресурсы доставлены, выход по проверке");
+            Debug.Log(building.BuildingName +  " строительство, все ресурсы доставлены, выход по проверке доставленых ресурсов");
             unsubscribeFromStorages();
             changeToNextState();
         }
@@ -109,5 +109,10 @@ public class AB_State_CollectingMaterials : ActiveBuildingState
         AB_State_ProductionCycle newState = new AB_State_ProductionCycle(building);
         building.ChangeState(newState);
         StateChanged.Invoke(newState);
+    }
+
+    public override void StartStopWork()
+    {
+        Debug.Log("не имплементировано");
     }
 }

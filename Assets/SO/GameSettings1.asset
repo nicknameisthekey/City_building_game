@@ -18,6 +18,14 @@ MonoBehaviour:
   - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
       type: 3}
     TileIDToPlace: {x: 32, y: 32}
-  - BuildingPrefab: {fileID: 4499134076198165647, guid: 519f6789d686da442b832fd46f821bbb,
+    Direction: 0
+  - BuildingPrefab: {fileID: 7495477507352536102, guid: 9db5ee8dc56037747b182368992aca71,
       type: 3}
-    TileIDToPlace: {x: 31, y: 32}
+    TileIDToPlace: {x: 32, y: 33}
+    Direction: 2
+  startingRecources:
+  - Amount: 10
+    Type: 0
+  startingStaticRes:
+  - Type: 1
+    Amount: 10

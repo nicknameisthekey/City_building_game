@@ -17,6 +17,10 @@ public class ActiveBuildingNew : BuildingNearRoad
         CurrentState.Initialize();
         Map.NewStorageBuildingPlaced += onNewStorageBuild;
     }
+    public void StartStopWork()
+    {
+        CurrentState.StartStopWork();
+    }
     public void ChangeState(ActiveBuildingState newState)
     {
         CurrentState = newState;

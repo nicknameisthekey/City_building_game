@@ -6,38 +6,10 @@ using UnityEngine.EventSystems;
 
 public class UtilityDebug : MonoBehaviour
 {
-    public static event Action CloseAllWindows = delegate { };
+
     Vector2Int first;
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X) && !EventSystem.current.IsPointerOverGameObject())
-        {
-            if (GameUtility.GetTileUnderMousePosition(out Tile tile))
-            {
-                if (tile is TileWithBuilding)
-                {
-                    TileWithBuilding tileWithBuilding = (TileWithBuilding)tile;
-                    if (tileWithBuilding.Building is StorageBuilding)
-                    {
-                        StorageBuilding storageBuilding = (StorageBuilding)tileWithBuilding.Building;
-                        StorageInfo.ShowRecources(storageBuilding.Storage);
-                    }
-                    else if (tileWithBuilding.Building is ActiveBuildingNew)
-                    {
-                        ActiveBuildingNew ab = (ActiveBuildingNew)tileWithBuilding.Building;
-                        ActiveBuildingUI.ShowUI(ab);
-                    }
-                }
-                else
-                {
-                    Debug.Log("Тайл " + tile.TileID + " без строения");
-                }
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.V))
-        {
-            CloseAllWindows.Invoke();
-        }
         if (Input.GetKeyDown(KeyCode.J) && !EventSystem.current.IsPointerOverGameObject())
         {
             if (first == Vector2Int.zero)

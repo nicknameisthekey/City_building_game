@@ -27,6 +27,7 @@ public class BuildingPlacer : MonoBehaviour
         InputHandler.RotationKeyPressed += rotate;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         currentGO = Instantiate(prefab, new Vector2(mousePos.x, mousePos.y), Quaternion.identity);
+        currentGO.GetComponent<SpriteRenderer>().sortingOrder = 500;
         currentBuilding = currentGO.GetComponent<Building>();
         currentBuilding.ShowSprite(currentRotation);
         instance.StartCoroutine(instance.draggingCour(currentBuilding));
@@ -93,6 +94,7 @@ public class BuildingPlacer : MonoBehaviour
     }
     static void place(Vector2Int tileID)
     {
+        currentGO.GetComponent<SpriteRenderer>().sortingOrder = Map.MapSideSize-tileID.x;
         if (currentBuilding is StandaloneBuilding)
         {
             currentBuilding.Initialize(tileID);
@@ -106,12 +108,15 @@ public class BuildingPlacer : MonoBehaviour
         currentBuilding = null;
         StopedConstructing.Invoke();
     }
-    public static void PlaceInstantly(GameObject PrefabToPlace, Vector2Int tileID)
+    public static void PlaceInstantly(GameObject PrefabToPlace, Vector2Int tileID, Direction direction)
     {
         currentGO = Instantiate(PrefabToPlace, Map.TileMap[tileID.x, tileID.y].TileGo.transform.position, Quaternion.identity);
         currentBuilding = currentGO.GetComponent<Building>();
+        while (currentRotation != direction)
+            rotate();
         place(tileID);
     }
+
     static void onStopConstruction()
     {
         InputHandler.RotationKeyPressed -= rotate;
