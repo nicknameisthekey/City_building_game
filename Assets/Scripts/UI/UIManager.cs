@@ -44,9 +44,9 @@ public class UIManager : MonoBehaviour
                     StorageBuilding storageBuilding = (StorageBuilding)tileWithBuilding.Building;
                     StorageInfo.ShowRecources(storageBuilding.Storage);
                 }
-                else if (tileWithBuilding.Building is ActiveBuildingNew)
+                else if (tileWithBuilding.Building is ActiveBuilding)
                 {
-                    ActiveBuildingNew ab = (ActiveBuildingNew)tileWithBuilding.Building;
+                    ActiveBuilding ab = (ActiveBuilding)tileWithBuilding.Building;
                     ActiveBuildingUI.ShowUI(ab);
                 }
             }

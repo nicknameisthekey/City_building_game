@@ -22,4 +22,10 @@ public class GameSettings : ScriptableObject
     public List<StaticRecource> StaringStaticRes { get => startingStaticRes; }
     #endregion
 
+    #region LogSettings
+    [SerializeField] bool activeBuildingLog;
+    public bool ActiveBuildingLog { get => activeBuildingLog; }
+    #endregion
+
+
 }

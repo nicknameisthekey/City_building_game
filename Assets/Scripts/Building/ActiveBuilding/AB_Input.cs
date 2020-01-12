@@ -7,31 +7,31 @@ public class AB_Input
 {
     AB_State_ProductionCycle state;
     ActiveBuildingParams abParams;
-    //List<Recource> freeSpaceLeft = new List<Recource>();
     public bool ProductionFlag { get; private set; } = true; //по умолчанию тру, фолс после инициализации
     public event Action ProductionAvaliable = delegate { };
     bool storageFull = false;
     public AB_Input(AB_State_ProductionCycle state)
     {
         this.state = state;
-        abParams = state.building.AbParams;
+        abParams = state.Building.AbParams;
     }
     public void Initialize() { ProductionFlag = false; requestRecourcesFromAllStorages(); }
 
     public void requestRecourcesFromAllStorages()
     {
         state.InputSubstracted -= requestRecourcesFromAllStorages;
-        foreach (var st in state.building.ReachableStorages)
+        foreach (var st in state.Building.ReachableStorages)
         {
             foreach (var res in abParams.InputRecourceCapacity)
             {
                 st.Key.Storage.SubstractMaximumAmount(res.Key, res.Value - state.InputRecourcesLocal[res.Key], out int changed);
                 if (changed != 0)
                 {
-                    Debug.Log(res.Value);
                     state.InputRecourcesLocal[res.Key] += changed;
-                    Debug.Log(state.building.BuildingName +" <color=blue>взял на локальный склад " + changed + " " + res.Key +
-                        " осталось до заполнения " + (res.Value - state.InputRecourcesLocal[res.Key]) + "</color>");
+                    if (UtilityDebug.ActivebuildingLog) Debug.Log($"[AB_Input] {state.Building.BuildingName} взял на локальный склад" +
+                        $" [{changed} {res.Key}], осталось до заполнения { (res.Value - state.InputRecourcesLocal[res.Key])}" +
+                        $" [{ Time.deltaTime}]", state.Building.gameObject);
+
                 }
             }
         }
@@ -40,14 +40,14 @@ public class AB_Input
     }
     void subscribeForStorages()
     {
-        foreach (var st in state.building.ReachableStorages)
+        foreach (var st in state.Building.ReachableStorages)
         {
             st.Key.Storage.RecourcesChanged += requestRecourcesFromStorage;
         }
     }
     void unSubscribeForStorages()
     {
-        foreach (var st in state.building.ReachableStorages)
+        foreach (var st in state.Building.ReachableStorages)
         {
             st.Key.Storage.RecourcesChanged -= requestRecourcesFromStorage;
         }
@@ -60,8 +60,9 @@ public class AB_Input
             if (changed != 0)
             {
                 state.InputRecourcesLocal[res.Key] += changed;
-                Debug.Log(state.building.BuildingName + "<color=blue> input взял на локальный склад " + changed + " " + res.Key +
-                    " осталось до заполнения " + (res.Value - state.InputRecourcesLocal[res.Key]) + "</color>");
+                if (UtilityDebug.ActivebuildingLog) Debug.Log($"[AB_Input] {state.Building.BuildingName} взял на локальный склад" +
+                        $" [{changed} {res.Key}], осталось до заполнения { (res.Value - state.InputRecourcesLocal[res.Key])}" +
+                        $" [{ Time.deltaTime}]", state.Building.gameObject);
             }
         }
         updateProductionFlag();
@@ -99,7 +100,8 @@ public class AB_Input
                 return;
             }
         }
-        Debug.Log(state.building.BuildingName + " input разрешил производство");
+        if (UtilityDebug.ActivebuildingLog) Debug.Log($"[AB_Input] {state.Building.BuildingName} разрешил производство " +
+            $"[{ Time.deltaTime}]", state.Building.gameObject);
         ProductionFlag = true;
         ProductionAvaliable.Invoke();
     }

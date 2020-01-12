@@ -1,18 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Building : MonoBehaviour
+public abstract class Building : MonoBehaviour
 {
-    static int buildingID = 0;
-    protected Vector2Int _tileID;
     [SerializeField] string buildingName;
-    public string BuildingName { get; protected set; }
-    public Vector2Int TileID { get => _tileID; }
-    public virtual void Initialize(Vector2Int tileID) { _tileID = tileID; buildingID++; BuildingName = buildingName + " " + buildingID; }
     [SerializeField] Sprite[] sprites;
-    public void ShowSprite(Direction direction)
-    {
-        gameObject.GetComponent<SpriteRenderer>().sprite = sprites[(int)direction];
-    }
+
+    static int buildingID = 0;
+
+    public BuildingParams BuildingParams { get; protected set; }
+    public Vector2Int TileID { get; protected set; }
+    public string BuildingName { get; protected set; }
+
+    public event Action<BuildingState> StateChanged = delegate { };
+    public BuildingState CurrentState { get; protected set; }
+    public virtual void Initialize(Vector2Int tileID) { TileID = tileID; buildingID++; BuildingName = $"[{buildingID}] [{buildingName}]"; }
+    public void ShowSprite(Direction direction) => gameObject.GetComponent<SpriteRenderer>().sprite = sprites[(int)direction];
+    protected void stateChangedInvoke(BuildingState newState) => StateChanged.Invoke(newState);
+    public abstract void changeState(BuildingState newstate);
+    public abstract void finishConstruction();
 }

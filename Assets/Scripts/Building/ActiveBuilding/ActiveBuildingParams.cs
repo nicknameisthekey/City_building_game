@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(fileName = "New ActiveBuilding", menuName = "ActiveBuilding Params", order = 51)]
-public class ActiveBuildingParams : ScriptableObject
+public class ActiveBuildingParams : BuildingParams
 {
     [SerializeField] int ticksToProduce;
     public int TicksToProduce { get => ticksToProduce; }
     [SerializeField] List<Recource> recourcesProduction;
-    [SerializeField] List<Recource> constructRecources;
     [SerializeField] List<Recource> inputRecourceCapacity;
     [SerializeField] List<Recource> outputRecourceCapacity;
     [SerializeField] List<StaticRecource> staticRecources;
-    public List<Recource> ConstructRecources { get => constructRecources; }
+
     public Dictionary<RecourceType, int> InputRecources { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> OutputRecources { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> InputRecourceCapacity { get; private set; } = new Dictionary<RecourceType, int>();

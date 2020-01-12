@@ -89,10 +89,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7000428239393470845}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4b8c15949d78b74faa6ec3776dcb472, type: 3}
+  m_Script: {fileID: 11500000, guid: ebe913d8000e10245b938f7167034ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingName: "\u041A\u043E\u043C\u0435\u043D\u043E\u043B\u043E\u043C\u043D\u044F"
+  buildingName: "\u043A\u0430\u043C\u0435\u043D\u043E\u043B\u043E\u043C\u043D\u044F"
   sprites:
   - {fileID: 21300000, guid: f26c83cbdfadbb1438ac5c8e5289ab4a, type: 3}
   - {fileID: 21300000, guid: 12fe7fd6e43635b42a420134160aafc0, type: 3}

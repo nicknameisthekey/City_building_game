@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingNearRoad : Building
+public abstract class BuildingNearRoad : Building
 {
-    protected Vector2Int _roadIDItConnects;
-    public Vector2Int RoadIDItConnects => _roadIDItConnects;
+    public Vector2Int RoadIDItConnects { get; protected set; }
     protected Road roadItConnects;
+    public List<KeyValuePair<StorageBuilding, int>> ReachableStorages { get; protected set; }
     public virtual void Initialize(Vector2Int tileID, Vector2Int roadIDItConnects)
     {
         base.Initialize(tileID);
-        _roadIDItConnects = roadIDItConnects;
+        RoadIDItConnects = roadIDItConnects;
         roadItConnects = GameUtility.GetRoadByID(roadIDItConnects);
+        ReachableStorages = GameUtility.FindAllReachableStorages(RoadIDItConnects);
     }
+    protected abstract void onNewStorageBuild(StorageBuilding storageBuilding);
 }

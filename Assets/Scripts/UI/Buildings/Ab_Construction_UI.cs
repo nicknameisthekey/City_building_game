@@ -9,7 +9,7 @@ public class Ab_Construction_UI : MonoBehaviour
     [SerializeField] ImagesData recourceIcons;
     [SerializeField] Transform Layout;
     GameObject[] images = new GameObject[4];
-    AB_State_CollectingMaterials currentState;
+    State_Construction currentState;
     public void Initialize()
     {
         for (int i = 0; i < 4; i++)
@@ -19,7 +19,7 @@ public class Ab_Construction_UI : MonoBehaviour
         }
         gameObject.SetActive(false);
     }
-    public void Show(AB_State_CollectingMaterials state)
+    public void Show(State_Construction state)
     {
         if (currentState == null)
         {
@@ -27,7 +27,7 @@ public class Ab_Construction_UI : MonoBehaviour
             gameObject.SetActive(true);
             updateInfo(state);
             state.RecourcesLeftChanged += updateInfo;
-            state.StateChanged += onStateChanged;
+            state.Building.StateChanged += onStateChanged;
         }
         else
         {
@@ -35,22 +35,23 @@ public class Ab_Construction_UI : MonoBehaviour
             Show(state);
         }
     }
-    void onStateChanged(ActiveBuildingState newstate)
+    void onStateChanged(BuildingState newstate)
     {
         var st = currentState;
         Close();
-        ActiveBuildingUI.ShowUI(st.building);
+        ActiveBuildingUI.ShowUI((ActiveBuilding)st.Building);
     }
-    void updateInfo(AB_State_CollectingMaterials state)
+    void updateInfo(State_Construction state)
     {
         int i = 0;
-        for (; i < state.building.AbParams.ConstructRecources.Count; i++)
+        ActiveBuilding ab =(ActiveBuilding) state.Building;
+        for (; i < ab.AbParams.ConstructRecources.Count; i++)
         {
-            if (state.recourcesLeftToDeliver.ContainsKey(state.building.AbParams.ConstructRecources[i].Type))
+            if (state.RecourcesLeftToDeliver.ContainsKey(ab.AbParams.ConstructRecources[i].Type))
             {
                 images[i].SetActive(true);
-                images[i].GetComponent<Image>().sprite = recourceIcons.Sprites[(int)state.building.AbParams.ConstructRecources[i].Type];
-                images[i].GetComponentInChildren<Text>().text = state.recourcesLeftToDeliver[state.building.AbParams.ConstructRecources[i].Type].ToString();
+                images[i].GetComponent<Image>().sprite = recourceIcons.Sprites[(int)ab.AbParams.ConstructRecources[i].Type];
+                images[i].GetComponentInChildren<Text>().text = state.RecourcesLeftToDeliver[ab.AbParams.ConstructRecources[i].Type].ToString();
             }
         }
         for (; i < 4; i++)
@@ -62,7 +63,7 @@ public class Ab_Construction_UI : MonoBehaviour
     {
         if (!gameObject.activeSelf) return;
         gameObject.SetActive(false);
-        currentState.StateChanged -= onStateChanged;
+        currentState.Building.StateChanged -= onStateChanged;
         currentState.RecourcesLeftChanged -= updateInfo;
         currentState = null;
     }

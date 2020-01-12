@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AB_State_ProductionCycle : ActiveBuildingState
+public class AB_State_ProductionCycle : BuildingState
 {
     ActiveBuildingParams abParams;
     public AB_Work Ab_Work { get; private set; }
@@ -15,16 +15,16 @@ public class AB_State_ProductionCycle : ActiveBuildingState
     public event Action OutputSubstracted = delegate { };
     public event Action InputSubstracted = delegate { };
     public event Action InputAdded = delegate { };
+    public new ActiveBuilding Building;
 
-
-    public AB_State_ProductionCycle(ActiveBuildingNew activeBuilding)
+    public AB_State_ProductionCycle(ActiveBuilding activeBuilding)
     {
-        building = activeBuilding;
+        Building = activeBuilding;
     }
 
     public override void Initialize()
     {
-        abParams = building.AbParams;
+        abParams = Building.AbParams;
         fillDictionaries();
         AB_Input = new AB_Input(this);
         Ab_Work = new AB_Work(this);
@@ -32,11 +32,10 @@ public class AB_State_ProductionCycle : ActiveBuildingState
         if (abParams.InputRequired)
             AB_Input.Initialize();
         Ab_Work.Initialization();
-
     }
     void fillDictionaries()
     {
-        if (building.AbParams.InputRequired)
+        if (Building.AbParams.InputRequired)
             foreach (var kvp in abParams.InputRecources)
                 InputRecourcesLocal.Add(kvp.Key, 0);
         foreach (var kvp in abParams.OutputRecources)
@@ -47,13 +46,13 @@ public class AB_State_ProductionCycle : ActiveBuildingState
         foreach (var res in abParams.InputRecources)
         {
             InputRecourcesLocal[res.Key] -= res.Value;
-            Debug.Log(building.BuildingName + " вычитание в прод.цикле <color=purple>пустил в работу " + res.Value + " " + res.Key +
+            Debug.Log(Building.BuildingName + " вычитание в прод.цикле <color=purple>пустил в работу " + res.Value + " " + res.Key +
                     " осталось на складе " + InputRecourcesLocal[res.Key] + "</color>");
+            if (UtilityDebug.ActivebuildingLog) Debug.Log($"[AB_State_ProductionCycle] {Building.BuildingName} Пустил в работу [{res.Value} {res.Key}]" +
+                                $" осталось на складе [{InputRecourcesLocal[res.Key]}] [{Time.deltaTime}]", Building.gameObject);
         }
         InputSubstracted.Invoke();
     }
-
-
     public void addOutputInvoke()
     {
         OutputAdded.Invoke();

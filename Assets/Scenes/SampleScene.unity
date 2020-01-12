@@ -186,6 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd24cf23415787458a66bdc19f4309f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 0}
 --- !u!114 &385299411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 7443e5f0c41ebd641949d7b93d0a0397, type: 2}
+  utilityDebug: {fileID: 385299410}
   mapGen: {fileID: 385299408}
   CameraMovement: {fileID: 385299411}
   UIManager: {fileID: 1507594921}

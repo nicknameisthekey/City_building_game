@@ -29,3 +29,4 @@ MonoBehaviour:
   startingStaticRes:
   - Type: 1
     Amount: 10
+  activeBuildingLog: 1

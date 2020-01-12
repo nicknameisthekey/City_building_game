@@ -8,16 +8,17 @@ public class Storage
     public Dictionary<RecourceType, int> Recources { get; private set; } = new Dictionary<RecourceType, int>();
     public event Action<RecourceType, int, Storage> RecourceChanged = delegate { };
     public event Action<Storage> RecourcesChanged = delegate { };
-
+    public Building Building { get; private set; }
     public List<RecourceType> AcceptableTypes { get; private set; }
     public int Capacity { get; private set; } = 0;
     public int TotalAmountOfGoods { get; private set; } = 0;
 
     public Storage() { }
-    public Storage(List<RecourceType> acceptableTypes, int capacity)
+    public Storage(List<RecourceType> acceptableTypes, int capacity, Building building)
     {
         AcceptableTypes = acceptableTypes;
         Capacity = capacity;
+        Building = building;
     }
 
     public int GetFreeSpace()

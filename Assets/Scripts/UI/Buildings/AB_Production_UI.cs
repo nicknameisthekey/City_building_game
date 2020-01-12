@@ -41,7 +41,7 @@ public class AB_Production_UI : MonoBehaviour
         if (currentState == null)
         {
             currentState = state;
-            startStopBTN.Initialize(state.building);
+            startStopBTN.Initialize(state.Building);
             gameObject.SetActive(true);
             state.OutputAdded += updateInfo;
             state.OutputSubstracted += updateInfo;
@@ -59,10 +59,10 @@ public class AB_Production_UI : MonoBehaviour
     void updateInfo()
     {
         int i = 0;
-        if (currentState.building.AbParams.InputRequired)
+        if (currentState.Building.AbParams.InputRequired)
         {
-            var inputCapKVPS = currentState.building.AbParams.InputRecourceCapacity.ToList();
-            var inputKVPS = currentState.building.AbParams.InputRecources.ToList();
+            var inputCapKVPS = currentState.Building.AbParams.InputRecourceCapacity.ToList();
+            var inputKVPS = currentState.Building.AbParams.InputRecources.ToList();
 
             for (; i < inputCapKVPS.Count; i++)
             {
@@ -86,8 +86,8 @@ public class AB_Production_UI : MonoBehaviour
         }
 
         i = 0;
-        var outputCapKVPS = currentState.building.AbParams.OutputRecourceCapacity.ToList();
-        var outputKVPS = currentState.building.AbParams.OutputRecources.ToList();
+        var outputCapKVPS = currentState.Building.AbParams.OutputRecourceCapacity.ToList();
+        var outputKVPS = currentState.Building.AbParams.OutputRecources.ToList();
         for (; i < outputKVPS.Count; i++)
         {
             outputImages[i].SetActive(true);

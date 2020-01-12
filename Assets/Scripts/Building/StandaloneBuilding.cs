@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class StandaloneBuilding : Building
+public abstract class StandaloneBuilding : Building
 {
-   
 }

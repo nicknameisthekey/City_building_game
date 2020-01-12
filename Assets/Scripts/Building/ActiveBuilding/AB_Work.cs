@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AB_Work
@@ -13,7 +11,7 @@ public class AB_Work
     public event Action ProgressChanged = delegate { };
     public AB_Work(AB_State_ProductionCycle state)
     {
-        this.state = state; abParams = state.building.AbParams;
+        this.state = state; abParams = state.Building.AbParams;
         ticksNeed = abParams.TicksToProduce;
     }
     public int ticksDone { get; private set; } = 0;
@@ -34,7 +32,8 @@ public class AB_Work
         output.ProductionAvaliable -= startTicking;
         if (output.ProductionFlag && input.ProductionFlag)
         {
-            Debug.Log(state.building.BuildingName + " начало произвоства");
+            if (UtilityDebug.ActivebuildingLog) Debug.Log($"[AB_Work] {state.Building.BuildingName} старт производства" +
+    $"  [{ Time.deltaTime}]", state.Building.gameObject);
             state.substractInput();
             Timer.OneSecond += onTick;
         }
@@ -42,7 +41,10 @@ public class AB_Work
         {
             input.ProductionAvaliable += startTicking;
             output.ProductionAvaliable += startTicking;
-            Debug.Log(state.building.BuildingName + " input " + input.ProductionFlag + " output " + output.ProductionFlag);
+            Debug.Log(state.Building.BuildingName + " input " + input.ProductionFlag + " output " + output.ProductionFlag);
+
+            if (UtilityDebug.ActivebuildingLog) Debug.Log($"[AB_Work] {state.Building.BuildingName} проверка флагов " +
+   $" input {input.ProductionFlag} output {output.ProductionFlag} [{ Time.deltaTime}]", state.Building.gameObject);
         }
     }
     void onTick()
@@ -51,7 +53,6 @@ public class AB_Work
         {
             ticksDone++;
             ProgressChanged.Invoke();
-           // Debug.Log(ticksDone);
             if (ticksDone >= ticksNeed)
             {
                 ticksDone = 0;

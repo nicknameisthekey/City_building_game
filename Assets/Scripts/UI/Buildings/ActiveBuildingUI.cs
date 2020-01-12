@@ -19,11 +19,11 @@ public class ActiveBuildingUI : MonoBehaviour
         instance.production_UI.Close();
     }
 
-    public static void ShowUI(ActiveBuildingNew activeBuilding)
+    public static void ShowUI(ActiveBuilding activeBuilding)
     {
         switch (activeBuilding.CurrentState)
         {
-            case AB_State_CollectingMaterials state:
+            case State_Construction state:
                 {
                     instance.constructionUI.Show(state);
                     break;

@@ -6,6 +6,12 @@ using UnityEngine.EventSystems;
 
 public class UtilityDebug : MonoBehaviour
 {
+    [SerializeField] GameSettings settings;
+    public static bool ActivebuildingLog { get; private set; }
+    public void Initialization(GameSettings settings)
+    {
+        ActivebuildingLog = settings.ActiveBuildingLog;
+    }
 
     Vector2Int first;
     void Update()

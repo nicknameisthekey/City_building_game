@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class StartStopBTN : MonoBehaviour
 {
-    ActiveBuildingNew currentBuilding;
-    public void Initialize(ActiveBuildingNew building)
+    ActiveBuilding currentBuilding;
+    public void Initialize(ActiveBuilding building)
     {
         currentBuilding = building;
     }
