@@ -12,7 +12,7 @@ public class GameInitializer : MonoBehaviour
         utilityDebug.Initialization(settings);
         Tile[,] tileMap = mapGen.GenerateMap(settings);
         Map.Initialize(settings, tileMap);
-        StaticRecources.Initializtion(settings.StaringStaticRes);
+        GlobalRecources.Initializtion(settings.StaringStaticRes);
         constructOnGameStart();
         CameraMovement.Initialize();
         if (Map.StorageBuildings.Count != 0)

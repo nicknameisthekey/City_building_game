@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,7 +19,7 @@ public class AB_Output
         localStorageAdd += onLocalStorageAdd;
     }
 
-    //проход по всем складам в попытки отдать ресурсы
+    //проход по всем складам в попытке отдать ресурсы
     //отправка на удаленный склад текущего output и остатков на локальный склад
     public void AddOutput()
     {

@@ -1,8 +1,6 @@
 ﻿using System;
 
-public interface IHeapItem<T> : IComparable<T> {
-	int HeapIndex {
-		get;
-		set;
-	}
+public interface IHeapItem<T> : IComparable<T>
+{
+    int HeapIndex { get; set; }
 }

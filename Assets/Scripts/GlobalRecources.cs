@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class StaticRecources
+public static class GlobalRecources
 {
-    static Dictionary<StaticRecourceType, int> recources = new Dictionary<StaticRecourceType, int>();
-    public static event Action<StaticRecourceType> RecourceChanged = delegate { };
+    static Dictionary<GlobalRecourceType, int> recources = new Dictionary<GlobalRecourceType, int>();
+    public static event Action<GlobalRecourceType> RecourceChanged = delegate { };
     public static event Action RecourcesChanged = delegate { };
     public static void Initializtion(List<StaticRecource> addOnStart)
     {
-        foreach (var item in Enum.GetValues(typeof(StaticRecourceType)))
+        foreach (var item in Enum.GetValues(typeof(GlobalRecourceType)))
         {
-            StaticRecourceType type = (StaticRecourceType)item;
+            GlobalRecourceType type = (GlobalRecourceType)item;
             recources.Add(type, 0);
         }
         foreach (var res in addOnStart)
@@ -22,11 +22,11 @@ public static class StaticRecources
             RecourceChanged.Invoke(res.Type);
         }
     }
-    public static int GetAmount(StaticRecourceType type)
+    public static int GetAmount(GlobalRecourceType type)
     {
         return recources[type];
     }
-    public static bool CanChangeAmount(StaticRecourceType type, int amount)
+    public static bool CanChangeAmount(GlobalRecourceType type, int amount)
     {
         if (recources[type] - amount < 0)
             return false;
@@ -36,7 +36,7 @@ public static class StaticRecources
         RecourcesChanged.Invoke();
         return true;
     }
-    public static bool CanChangeAmount(Dictionary<StaticRecourceType, int> recourcesToCheck, bool substract)
+    public static bool CanChangeAmount(Dictionary<GlobalRecourceType, int> recourcesToCheck, bool substract)
     {
         if (substract)
         {
@@ -48,7 +48,7 @@ public static class StaticRecources
         }
         return true;
     }
-    public static void SubstractRecources(Dictionary<StaticRecourceType, int> recourcesToSubstract)
+    public static void SubstractRecources(Dictionary<GlobalRecourceType, int> recourcesToSubstract)
     {
         foreach (var kvp in recourcesToSubstract)
         {
@@ -58,7 +58,7 @@ public static class StaticRecources
 
         RecourcesChanged.Invoke();
     }
-    public static void AddRecources(Dictionary<StaticRecourceType, int> recourcesToAdd)
+    public static void AddRecources(Dictionary<GlobalRecourceType, int> recourcesToAdd)
     {
         foreach (var kvp in recourcesToAdd)
         {

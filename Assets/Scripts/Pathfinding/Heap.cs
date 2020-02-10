@@ -1,8 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-
-public class Heap<T> where T : IHeapItem<T> {
+﻿public class Heap<T> where T : IHeapItem<T> {
 	
 	T[] items;
 	int currentItemCount;

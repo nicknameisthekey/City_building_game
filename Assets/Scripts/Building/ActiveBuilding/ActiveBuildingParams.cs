@@ -9,13 +9,11 @@ public class ActiveBuildingParams : BuildingParams
     [SerializeField] List<Recource> inputRecourceCapacity;
     [SerializeField] List<Recource> outputRecourceCapacity;
     [SerializeField] List<StaticRecource> staticRecourceCost;
-
-
     public Dictionary<RecourceType, int> InputRecources { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> OutputRecources { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> InputRecourceCapacity { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> OutputRecourceCapacity { get; private set; } = new Dictionary<RecourceType, int>();
-    public Dictionary<StaticRecourceType, int> StaticRecourceCost { get; private set; } = new Dictionary<StaticRecourceType, int>();
+    public Dictionary<GlobalRecourceType, int> StaticRecourceCost { get; private set; } = new Dictionary<GlobalRecourceType, int>();
     public bool InputRequired { get; private set; } = false;
 
     private void OnEnable()

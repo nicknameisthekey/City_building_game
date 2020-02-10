@@ -52,7 +52,6 @@ public class Pathfinding
                 }
             }
         }
-       // Debug.Log("While Stopped with null!");
         return null;
     }
 
@@ -90,10 +89,6 @@ public class Pathfinding
     public static List<Node> GetNeighbours(Node node)
     {
         List<Node> neighbours = new List<Node>();
-        //for (Direction i = 0; (int)i < 4; i++)
-        //{
-
-        //    var ID = GameUtility.GetNearbyIDByDirection(i);
         foreach (var id in GameUtility.NearbyIDs)
         {
             int checkX = node.gridX + id.x;

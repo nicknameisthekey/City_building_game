@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,7 +34,7 @@ public class Storage
     {
         //убирает из склада максимальное количество
         //возвращает тру только если списано все количество ресурса
-        //amount проходит положительный!
+        //amount должен быть положительный!
         if (amount < 0)
             Debug.Log("прилетел amount < 0, проверяй");
 

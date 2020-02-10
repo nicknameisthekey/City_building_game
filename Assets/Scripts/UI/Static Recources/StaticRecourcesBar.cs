@@ -8,13 +8,13 @@ public class StaticRecourcesBar : MonoBehaviour
     [SerializeField] GameObject StaticRecourceImagePrefab;
     [SerializeField] GameObject Layout;
     [SerializeField] ImagesData recourceSprites;  
-    Dictionary<StaticRecourceType, Text> texts = new Dictionary<StaticRecourceType, Text>();
+    Dictionary<GlobalRecourceType, Text> texts = new Dictionary<GlobalRecourceType, Text>();
 
     private void Awake()
     {
-        foreach (var item in Enum.GetValues(typeof(StaticRecourceType)))
+        foreach (var item in Enum.GetValues(typeof(GlobalRecourceType)))
         {
-            StaticRecourceType type = (StaticRecourceType)item;
+            GlobalRecourceType type = (GlobalRecourceType)item;
             GameObject image = Instantiate(StaticRecourceImagePrefab, Layout.transform);
             Text text = image.GetComponentInChildren<Text>();
             image.GetComponent<Image>().sprite = recourceSprites.Sprites[(int)type];
@@ -22,15 +22,15 @@ public class StaticRecourcesBar : MonoBehaviour
         }
         foreach (var kvp in texts)
         {
-            kvp.Value.text = StaticRecources.GetAmount(kvp.Key).ToString();
+            kvp.Value.text = GlobalRecources.GetAmount(kvp.Key).ToString();
         }
 
-        StaticRecources.RecourceChanged += changeAmount;
+        GlobalRecources.RecourceChanged += changeAmount;
     }
-    void changeAmount(StaticRecourceType type)
+    void changeAmount(GlobalRecourceType type)
     {
        // Debug.Log(StaticRecources.GetAmount(type).ToString());
-        texts[type].text = StaticRecources.GetAmount(type).ToString();
+        texts[type].text = GlobalRecources.GetAmount(type).ToString();
     }
 
 }

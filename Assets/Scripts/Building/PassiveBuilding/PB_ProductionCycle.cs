@@ -15,22 +15,22 @@ public class PB_ProductionCycle : BuildingState
     }
     void tryChangeStaticRecources()
     {
-        StaticRecources.RecourcesChanged -= tryChangeStaticRecources;
+        GlobalRecources.RecourcesChanged -= tryChangeStaticRecources;
         if (PBParams.recourcesRequired)
         {
-            if (StaticRecources.CanChangeAmount(PBParams.StaticRecourcesRequired, true))
+            if (GlobalRecources.CanChangeAmount(PBParams.StaticRecourcesRequired, true))
             {
-                StaticRecources.SubstractRecources(PBParams.StaticRecourcesRequired);
-                StaticRecources.AddRecources(PBParams.StaticRecourcesProvided);
+                GlobalRecources.SubstractRecources(PBParams.StaticRecourcesRequired);
+                GlobalRecources.AddRecources(PBParams.StaticRecourcesProvided);
                 if (UtilityDebug.PassivebuildingLog) Debug.Log($"[PB_ProductionCycle] {Building.BuildingName} вычел input, дал output [{Time.deltaTime}]", Building.gameObject);
                 StaticRecourcesChanged.Invoke();
             }
             else
-                StaticRecources.RecourcesChanged += tryChangeStaticRecources;
+                GlobalRecources.RecourcesChanged += tryChangeStaticRecources;
         }
         else
         {
-            StaticRecources.AddRecources(PBParams.StaticRecourcesProvided);
+            GlobalRecources.AddRecources(PBParams.StaticRecourcesProvided);
             if (UtilityDebug.PassivebuildingLog) Debug.Log($"[PB_ProductionCycle] {Building.BuildingName} input не нужен, отдаю output. [{Time.deltaTime}]", Building.gameObject);
             StaticRecourcesChanged.Invoke();
         }

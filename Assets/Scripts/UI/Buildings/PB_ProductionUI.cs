@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,7 +33,7 @@ public class PB_ProductionUI : MonoBehaviour
             currentState = state;
             gameObject.SetActive(true);
             currentState.StaticRecourcesChanged += updateInfo;
-            StaticRecources.RecourcesChanged += updateInfo;
+            GlobalRecources.RecourcesChanged += updateInfo;
             updateInfo();
         }
         else
@@ -45,8 +44,8 @@ public class PB_ProductionUI : MonoBehaviour
     }
     void updateInfo()
     {
-        KeyValuePair<StaticRecourceType, int>[] inputKVPS;
-        KeyValuePair<StaticRecourceType, int>[] outputKVPS = currentState.PBParams.StaticRecourcesProvided.ToArray(); ;
+        KeyValuePair<GlobalRecourceType, int>[] inputKVPS;
+        KeyValuePair<GlobalRecourceType, int>[] outputKVPS = currentState.PBParams.StaticRecourcesProvided.ToArray(); ;
         int i = 0;
         if (currentState.PBParams.recourcesRequired)
         {
@@ -55,7 +54,7 @@ public class PB_ProductionUI : MonoBehaviour
             {
                 inputImages[i].SetActive(true);
                 inputImages[i].GetComponent<Image>().sprite = staticRecourceIcons.Sprites[(int)inputKVPS[i].Key];
-                inputImages[i].GetComponentInChildren<Text>().text = $"{StaticRecources.GetAmount(inputKVPS[i].Key)} / " +
+                inputImages[i].GetComponentInChildren<Text>().text = $"{GlobalRecources.GetAmount(inputKVPS[i].Key)} / " +
                     $"{inputKVPS[i].Value}";
             }
         }
@@ -79,7 +78,7 @@ public class PB_ProductionUI : MonoBehaviour
         if (!gameObject.activeSelf) return;
         gameObject.SetActive(false);
         currentState.StaticRecourcesChanged -= updateInfo;
-        StaticRecources.RecourcesChanged -= updateInfo;
+        GlobalRecources.RecourcesChanged -= updateInfo;
         currentState = null;
     }
 }

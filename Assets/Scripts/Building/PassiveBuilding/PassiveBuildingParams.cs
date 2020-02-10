@@ -4,8 +4,8 @@ using UnityEngine;
 public class PassiveBuildingParams : BuildingParams
 {
     [SerializeField] List<StaticRecource> staticRecources;
-    public Dictionary<StaticRecourceType, int> StaticRecourcesRequired { get; private set; } = new Dictionary<StaticRecourceType, int>();
-    public Dictionary<StaticRecourceType, int> StaticRecourcesProvided { get; private set; } = new Dictionary<StaticRecourceType, int>();
+    public Dictionary<GlobalRecourceType, int> StaticRecourcesRequired { get; private set; } = new Dictionary<GlobalRecourceType, int>();
+    public Dictionary<GlobalRecourceType, int> StaticRecourcesProvided { get; private set; } = new Dictionary<GlobalRecourceType, int>();
     public bool recourcesRequired { get; private set; } = false;
 
     private void OnEnable()
@@ -26,6 +26,4 @@ public class PassiveBuildingParams : BuildingParams
                 StaticRecourcesProvided.Add(res.Type, res.Amount);
         }
     }
-
-   
 }

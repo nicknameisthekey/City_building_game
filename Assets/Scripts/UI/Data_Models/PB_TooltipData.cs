@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PB_BuildingMenu_TooltipModel //: TooltipData
+﻿public class PB_BuildingMenu_TooltipModel 
 {
     public string AllDataInText;
     public PB_BuildingMenu_TooltipModel(PassiveBuildingParams pbParams)

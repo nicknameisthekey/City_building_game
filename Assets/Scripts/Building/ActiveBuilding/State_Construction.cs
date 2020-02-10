@@ -26,7 +26,6 @@ public class State_Construction : BuildingState
         {
             if (AskAllStoragesForRecources())
             {
-                //Debug.Log(building.BuildingName + " строительство, собрали все ресурсы, смена стейта по первичной проверке");
                 if (UtilityDebug.BuildingConstructionLog) Debug.Log($"[State_Construction] {Building.BuildingName} собрал все ресурсы" +
                     $" в инициализации [{Time.deltaTime}]", Building.gameObject);
                 unsubscribeFromStorages();

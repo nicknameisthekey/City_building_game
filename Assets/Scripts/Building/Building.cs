@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Building : MonoBehaviour
@@ -9,7 +7,6 @@ public abstract class Building : MonoBehaviour
     [SerializeField] Sprite[] sprites;
 
     static int buildingID = 0;
-
     public BuildingParams BuildingParams { get; protected set; }
     public Vector2Int TileID { get; protected set; }
     public string BuildingName { get; protected set; }

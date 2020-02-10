@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -83,15 +82,15 @@ public class AB_State_ProductionCycle : BuildingState
 
     void checkStaticRecources()
     {
-        StaticRecources.RecourcesChanged -= checkStaticRecources;
-        if (StaticRecources.CanChangeAmount(abParams.StaticRecourceCost, true))
+        GlobalRecources.RecourcesChanged -= checkStaticRecources;
+        if (GlobalRecources.CanChangeAmount(abParams.StaticRecourceCost, true))
         {
-            StaticRecources.SubstractRecources(abParams.StaticRecourceCost);
+            GlobalRecources.SubstractRecources(abParams.StaticRecourceCost);
             if (UtilityDebug.ActivebuildingLog) Debug.Log($"[AB_State_productionCycle] {Building.BuildingName} проверка статичных ресурсов пройдена" +
                   $" [{Time.deltaTime}]", Building.gameObject);
             staticRecourceProvided();
         }
         else
-            StaticRecources.RecourcesChanged += checkStaticRecources;
+            GlobalRecources.RecourcesChanged += checkStaticRecources;
     }
 }

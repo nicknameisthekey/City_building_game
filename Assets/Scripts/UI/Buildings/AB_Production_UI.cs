@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -121,7 +120,7 @@ public class AB_Production_UI : MonoBehaviour
             outputStorageImages[i].SetActive(false);
         }
         //staticres
-        KeyValuePair<StaticRecourceType, int>[] staticKVP = currentState.Building.AbParams.StaticRecourceCost.ToArray();
+        KeyValuePair<GlobalRecourceType, int>[] staticKVP = currentState.Building.AbParams.StaticRecourceCost.ToArray();
         i = 0;
         for (; i < staticKVP.Length; i++)
         {
