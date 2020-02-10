@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4f068ad63ac040459e0e044f919048d, type: 3}
   m_Name: Hunter
   m_EditorClassIdentifier: 
-  constructRecources: []
-  staticRecources: []
+  constructRecources:
+  - Amount: 6
+    Type: 0
+  staticRecources:
+  - Type: 0
+    Amount: 5

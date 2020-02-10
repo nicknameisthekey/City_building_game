@@ -26,7 +26,11 @@ MonoBehaviour:
   startingRecources:
   - Amount: 10
     Type: 0
+  - Amount: 10
+    Type: 3
   startingStaticRes:
   - Type: 1
     Amount: 10
   activeBuildingLog: 1
+  passiveBuildingLog: 1
+  buildingConstructionLog: 1

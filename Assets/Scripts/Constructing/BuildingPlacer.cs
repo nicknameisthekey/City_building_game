@@ -94,7 +94,7 @@ public class BuildingPlacer : MonoBehaviour
     }
     static void place(Vector2Int tileID)
     {
-        currentGO.GetComponent<SpriteRenderer>().sortingOrder = Map.MapSideSize-tileID.x;
+        currentGO.GetComponent<SpriteRenderer>().sortingOrder = Map.MapSideSize * 3 - (int)currentGO.transform.position.y * 2;
         if (currentBuilding is StandaloneBuilding)
         {
             currentBuilding.Initialize(tileID);

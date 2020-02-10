@@ -9,11 +9,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject recourceInfoPrefab;
     [SerializeField] GameObject staticRecourcePannelPrefab;
     [SerializeField] GameObject activebuildingUIPrefab;
+    [SerializeField] GameObject tooltipManagerPrefab;
     Transform UITransform;
     static GameObject _buildingUI;
     static GameObject _recourceInfoPrefab;
     static GameObject _staticRecourcesPanel;
     static GameObject _activeBuildingUI;
+    static GameObject _tooltipManager;
 
 
     public void Initialize()
@@ -31,28 +33,27 @@ public class UIManager : MonoBehaviour
         _recourceInfoPrefab.SetActive(false);
         _staticRecourcesPanel = Instantiate(staticRecourcePannelPrefab, UITransform);
         _activeBuildingUI = Instantiate(activebuildingUIPrefab, UITransform);
+        _tooltipManager = Instantiate(tooltipManagerPrefab, UITransform);
     }
     void showBuildingInfo()
     {
         if (GameUtility.GetTileUnderMousePosition(out Tile tile))
         {
-            if (tile is TileWithBuilding)
+            if (tile is TileWithBuilding tileWithBuilding)
             {
-                TileWithBuilding tileWithBuilding = (TileWithBuilding)tile;
                 if (tileWithBuilding.Building is StorageBuilding)
                 {
                     StorageBuilding storageBuilding = (StorageBuilding)tileWithBuilding.Building;
                     StorageInfo.ShowRecources(storageBuilding.Storage);
                 }
-                else if (tileWithBuilding.Building is ActiveBuilding)
+                else if (tileWithBuilding.Building is BuildingNearRoad buildingNearRoad)
                 {
-                    ActiveBuilding ab = (ActiveBuilding)tileWithBuilding.Building;
-                    ActiveBuildingUI.ShowUI(ab);
+                    BuildingInfoUI.ShowUI(buildingNearRoad);
                 }
             }
             else
             {
-                Debug.Log("Тайл " + tile.TileID + " без строения");
+                //Debug.Log("Тайл " + tile.TileID + " без строения");
             }
         }
     }

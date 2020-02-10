@@ -13,9 +13,12 @@ public class AB_Production_UI : MonoBehaviour
     [SerializeField] Image progressBar;
     [SerializeField] StartStopBTN startStopBTN;
     [SerializeField] Transform inputStorageLayout;
+    [SerializeField] Transform staticRecourcesLayout;
+    [SerializeField] ImagesData staticRecourcesIcons;
     GameObject[] inputStorageImages = new GameObject[4];
     GameObject[] outputImages = new GameObject[4];
     GameObject[] outputStorageImages = new GameObject[4];
+    GameObject[] staticRecourcesImages = new GameObject[4];
     AB_State_ProductionCycle currentState;
     public void Initialize()
     {
@@ -34,6 +37,11 @@ public class AB_Production_UI : MonoBehaviour
             GameObject image = Instantiate(imagePrefab, outputStorageLayout);
             outputStorageImages[i] = image;
         }
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject image = Instantiate(imagePrefab, staticRecourcesLayout);
+            staticRecourcesImages[i] = image;
+        }
         gameObject.SetActive(false);
     }
     public void Show(AB_State_ProductionCycle state)
@@ -48,6 +56,7 @@ public class AB_Production_UI : MonoBehaviour
             state.Ab_Work.ProgressChanged += updateInfo;
             state.InputSubstracted += updateInfo;
             state.InputAdded += updateInfo;
+            state.StaticRecourcesProvided += updateInfo;
             updateInfo();
         }
         else
@@ -111,6 +120,23 @@ public class AB_Production_UI : MonoBehaviour
         {
             outputStorageImages[i].SetActive(false);
         }
+        //staticres
+        KeyValuePair<StaticRecourceType, int>[] staticKVP = currentState.Building.AbParams.StaticRecourceCost.ToArray();
+        i = 0;
+        for (; i < staticKVP.Length; i++)
+        {
+            staticRecourcesImages[i].SetActive(true);
+            staticRecourcesImages[i].GetComponent<Image>().sprite = staticRecourcesIcons.Sprites[(int)staticKVP[i].Key];
+            staticRecourcesImages[i].GetComponentInChildren<Text>().text = staticKVP[i].Value.ToString();
+            if (currentState.StaticRecourceProvided_bool)
+                staticRecourcesImages[i].GetComponentInChildren<Text>().color = Color.green;
+            else
+                staticRecourcesImages[i].GetComponentInChildren<Text>().color = Color.red;
+        }
+        for (; i < 4; i++)
+        {
+            staticRecourcesImages[i].SetActive(false);
+        }
         progressBar.GetComponent<Image>().fillAmount = (float)currentState.Ab_Work.ticksDone / (float)currentState.Ab_Work.ticksNeed;
     }
     public void Close()
@@ -122,6 +148,7 @@ public class AB_Production_UI : MonoBehaviour
         currentState.Ab_Work.ProgressChanged -= updateInfo;
         currentState.InputSubstracted -= updateInfo;
         currentState.InputAdded -= updateInfo;
+        currentState.StaticRecourcesProvided -= updateInfo;
         currentState = null;
     }
 }

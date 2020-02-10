@@ -16,7 +16,6 @@ public class ActiveBuilding : BuildingNearRoad
 
         if (UtilityDebug.ActivebuildingLog) Debug.Log($"[ActiveBuilding] {BuildingName} инициализирован в {tileID}, прилегающая дорога " +
             $"{roadConnectionPoint}, нашел [{ReachableStorages.Count}] достижимых складов. [{Time.deltaTime}]", gameObject);
-
         CurrentState = new State_Construction(this);
         CurrentState.Initialize();
         Map.NewStorageBuildingPlaced += onNewStorageBuild;
@@ -52,8 +51,10 @@ public class ActiveBuilding : BuildingNearRoad
     public override void finishConstruction()
     {
         AB_State_ProductionCycle newState = new AB_State_ProductionCycle(this);
-        if (UtilityDebug.ActivebuildingLog) Debug.Log($"[ActiveBuilding] {BuildingName} закончил строительство, меняю стейт на [AB_State_ProductionCycle]" +
-                   $" [{Time.deltaTime}]", gameObject);
+        if (UtilityDebug.ActivebuildingLog) Debug.Log($"[ActiveBuilding] {BuildingName} здание достроилось, меняю стейт на [AB_Sate_ProductionCycle]" +
+                  $" [{Time.deltaTime}]", gameObject);
         changeState(newState);
     }
+
+
 }

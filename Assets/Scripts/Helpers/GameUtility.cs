@@ -101,8 +101,8 @@ public static class GameUtility
             if (path != null)
                 reachableStoragesUnsorted.Add(st, path.Count);
         }
-        if (reachableStoragesUnsorted.Count == 0)
-            return null;
+        //if (reachableStoragesUnsorted.Count == 0)
+        //    return null;
         return reachableStoragesUnsorted.OrderBy(d => d.Value).ToList();
 
     }

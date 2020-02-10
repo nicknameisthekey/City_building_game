@@ -27,7 +27,7 @@ public class State_Construction : BuildingState
             if (AskAllStoragesForRecources())
             {
                 //Debug.Log(building.BuildingName + " строительство, собрали все ресурсы, смена стейта по первичной проверке");
-                if (UtilityDebug.ActivebuildingLog) Debug.Log($"[State_Construction] {Building.BuildingName} собрал все ресурсы" +
+                if (UtilityDebug.BuildingConstructionLog) Debug.Log($"[State_Construction] {Building.BuildingName} собрал все ресурсы" +
                     $" в инициализации [{Time.deltaTime}]", Building.gameObject);
                 unsubscribeFromStorages();
                 changeToNextState();
@@ -70,14 +70,14 @@ public class State_Construction : BuildingState
         {
             RecourcesLeftToDeliver.Remove(type);
             RecourcesLeftChanged.Invoke(this);
-            if (UtilityDebug.ActivebuildingLog) Debug.Log($"[State_Construction] {Building.BuildingName} получил вcе необходимые [{type}]" +
+            if (UtilityDebug.BuildingConstructionLog) Debug.Log($"[State_Construction] {Building.BuildingName} получил вcе необходимые [{type}]" +
                    $" со склада {storage.Building.BuildingName} [{Time.deltaTime}]", Building.gameObject);
         }
         else if (changed >= 0)
         {
             RecourcesLeftToDeliver[type] -= changed;
             RecourcesLeftChanged.Invoke(this);
-            if (UtilityDebug.ActivebuildingLog) Debug.Log($"[State_Construction] {Building.BuildingName} получил [{changed}] [{type}]" +
+            if (UtilityDebug.BuildingConstructionLog) Debug.Log($"[State_Construction] {Building.BuildingName} получил [{changed}] [{type}]" +
                     $" со склада {storage.Building.BuildingName}, осталось [{RecourcesLeftToDeliver[type]}] [{Time.deltaTime}]", Building.gameObject);
         }
     }
@@ -95,7 +95,7 @@ public class State_Construction : BuildingState
     {
         if (RecourcesLeftToDeliver.Count == 0)
         {
-            if (UtilityDebug.ActivebuildingLog) Debug.Log($"[State_Construction] {Building.BuildingName} собрал все ресурсы" +
+            if (UtilityDebug.BuildingConstructionLog) Debug.Log($"[State_Construction] {Building.BuildingName} собрал все ресурсы" +
                    $" [{Time.deltaTime}]", Building.gameObject);
             unsubscribeFromStorages();
             changeToNextState();
@@ -113,6 +113,6 @@ public class State_Construction : BuildingState
     }
     public override void StartStopWork()
     {
-        if (UtilityDebug.ActivebuildingLog) Debug.Log($"[State_Construction] {Building.BuildingName} не имплементировано [{Time.deltaTime}]", Building.gameObject);
+        if (UtilityDebug.BuildingConstructionLog) Debug.Log($"[State_Construction] {Building.BuildingName} не имплементировано [{Time.deltaTime}]", Building.gameObject);
     }
 }

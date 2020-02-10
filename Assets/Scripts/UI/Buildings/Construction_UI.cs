@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Ab_Construction_UI : MonoBehaviour
+public class Construction_UI : MonoBehaviour
 {
     [SerializeField] GameObject imagePrefab;
     [SerializeField] ImagesData recourceIcons;
@@ -39,19 +39,24 @@ public class Ab_Construction_UI : MonoBehaviour
     {
         var st = currentState;
         Close();
-        ActiveBuildingUI.ShowUI((ActiveBuilding)st.Building);
+        BuildingInfoUI.ShowUI(st.Building);
     }
     void updateInfo(State_Construction state)
     {
         int i = 0;
-        ActiveBuilding ab =(ActiveBuilding) state.Building;
-        for (; i < ab.AbParams.ConstructRecources.Count; i++)
+        BuildingParams buildingParams = null;
+        if (state.Building is ActiveBuilding activeBuilding)
+            buildingParams = activeBuilding.AbParams;
+        else if (state.Building is PassiveBuilding passiveBuilding)
+            buildingParams = passiveBuilding.PBParams;
+
+        for (; i < buildingParams.ConstructRecources.Count; i++)
         {
-            if (state.RecourcesLeftToDeliver.ContainsKey(ab.AbParams.ConstructRecources[i].Type))
+            if (state.RecourcesLeftToDeliver.ContainsKey(buildingParams.ConstructRecources[i].Type))
             {
                 images[i].SetActive(true);
-                images[i].GetComponent<Image>().sprite = recourceIcons.Sprites[(int)ab.AbParams.ConstructRecources[i].Type];
-                images[i].GetComponentInChildren<Text>().text = state.RecourcesLeftToDeliver[ab.AbParams.ConstructRecources[i].Type].ToString();
+                images[i].GetComponent<Image>().sprite = recourceIcons.Sprites[(int)buildingParams.ConstructRecources[i].Type];
+                images[i].GetComponentInChildren<Text>().text = state.RecourcesLeftToDeliver[buildingParams.ConstructRecources[i].Type].ToString();
             }
         }
         for (; i < 4; i++)

@@ -6,7 +6,6 @@ public class Pathfinding
 {
     public static List<Node> FindPath(Vector2Int start, Vector2Int target)
     {
-
         Node startNode = Map.RoadMap[start.x, start.y];
         Node targetNode = Map.RoadMap[target.x, target.y];
         Heap<Node> openSet = new Heap<Node>(MaxSize);
@@ -19,7 +18,7 @@ public class Pathfinding
             l.Add(new Node(true, new Vector3(0, 0), start.x, start.y));
             return l;
         }
-
+        
         while (openSet.Count > 0)
         {
             Node currentNode = openSet.RemoveFirst();
@@ -53,7 +52,7 @@ public class Pathfinding
                 }
             }
         }
-        Debug.Log("While Stopped with null!");
+       // Debug.Log("While Stopped with null!");
         return null;
     }
 

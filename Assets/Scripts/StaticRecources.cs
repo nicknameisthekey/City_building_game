@@ -10,7 +10,6 @@ public static class StaticRecources
     public static event Action RecourcesChanged = delegate { };
     public static void Initializtion(List<StaticRecource> addOnStart)
     {
-
         foreach (var item in Enum.GetValues(typeof(StaticRecourceType)))
         {
             StaticRecourceType type = (StaticRecourceType)item;
@@ -27,7 +26,7 @@ public static class StaticRecources
     {
         return recources[type];
     }
-    public static bool ChangeAmount(StaticRecourceType type, int amount)
+    public static bool CanChangeAmount(StaticRecourceType type, int amount)
     {
         if (recources[type] - amount < 0)
             return false;
@@ -37,21 +36,35 @@ public static class StaticRecources
         RecourcesChanged.Invoke();
         return true;
     }
-    public static bool ChangeAmount(Dictionary<StaticRecourceType, int> recourcesToCheck)
+    public static bool CanChangeAmount(Dictionary<StaticRecourceType, int> recourcesToCheck, bool substract)
     {
-
-        foreach (var kvp in recourcesToCheck)
+        if (substract)
         {
-            if (recources[kvp.Key] + kvp.Value < 0)
-                return false;
-        }
-        foreach (var kvp in recourcesToCheck)
-        {
-            //Debug.Log(kvp.Key + " " + kvp.Value);
-            recources[kvp.Key] += kvp.Value;
-            RecourceChanged.Invoke(kvp.Key);
-            RecourcesChanged.Invoke();
+            foreach (var kvp in recourcesToCheck)
+            {
+                if (recources[kvp.Key] - kvp.Value < 0)
+                    return false;
+            }
         }
         return true;
+    }
+    public static void SubstractRecources(Dictionary<StaticRecourceType, int> recourcesToSubstract)
+    {
+        foreach (var kvp in recourcesToSubstract)
+        {
+            recources[kvp.Key] -= kvp.Value;
+            RecourceChanged.Invoke(kvp.Key);
+        }
+
+        RecourcesChanged.Invoke();
+    }
+    public static void AddRecources(Dictionary<StaticRecourceType, int> recourcesToAdd)
+    {
+        foreach (var kvp in recourcesToAdd)
+        {
+            recources[kvp.Key] += kvp.Value;
+            RecourceChanged.Invoke(kvp.Key);
+        }
+        RecourcesChanged.Invoke();
     }
 }

@@ -25,6 +25,11 @@ public class GameSettings : ScriptableObject
     #region LogSettings
     [SerializeField] bool activeBuildingLog;
     public bool ActiveBuildingLog { get => activeBuildingLog; }
+    [SerializeField] bool passiveBuildingLog;
+    public bool PassiveBuildingLog { get => passiveBuildingLog; }
+    [SerializeField] bool buildingConstructionLog;
+    public bool BuildingConstructionLog { get => buildingConstructionLog; }
+
     #endregion
 
 

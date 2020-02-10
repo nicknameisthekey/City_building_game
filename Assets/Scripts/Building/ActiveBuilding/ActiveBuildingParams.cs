@@ -8,13 +8,14 @@ public class ActiveBuildingParams : BuildingParams
     [SerializeField] List<Recource> recourcesProduction;
     [SerializeField] List<Recource> inputRecourceCapacity;
     [SerializeField] List<Recource> outputRecourceCapacity;
-    [SerializeField] List<StaticRecource> staticRecources;
+    [SerializeField] List<StaticRecource> staticRecourceCost;
+
 
     public Dictionary<RecourceType, int> InputRecources { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> OutputRecources { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> InputRecourceCapacity { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> OutputRecourceCapacity { get; private set; } = new Dictionary<RecourceType, int>();
-    public List<StaticRecource> StaticRecources { get => staticRecources; }
+    public Dictionary<StaticRecourceType, int> StaticRecourceCost { get; private set; } = new Dictionary<StaticRecourceType, int>();
     public bool InputRequired { get; private set; } = false;
 
     private void OnEnable()
@@ -41,6 +42,10 @@ public class ActiveBuildingParams : BuildingParams
         foreach (var r in outputRecourceCapacity)
         {
             OutputRecourceCapacity.Add(r.Type, r.Amount);
+        }
+        foreach (var r in staticRecourceCost)
+        {
+            StaticRecourceCost.Add(r.Type, r.Amount);
         }
     }
 }

@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd24cf23415787458a66bdc19f4309f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 0}
+  settings: {fileID: 11400000, guid: 7443e5f0c41ebd641949d7b93d0a0397, type: 2}
 --- !u!114 &385299411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +442,8 @@ MonoBehaviour:
   staticRecourcePannelPrefab: {fileID: 6625171047890022085, guid: ab049a3da66e7474393d0af426713271,
     type: 3}
   activebuildingUIPrefab: {fileID: 6407696521925313565, guid: edf61e742fef5084a80fcda1b6e8f0b9,
+    type: 3}
+  tooltipManagerPrefab: {fileID: 8199087648801151218, guid: d58bb6c0a40930e438ea8a43b42a7843,
     type: 3}
 --- !u!4 &1507594922
 Transform:

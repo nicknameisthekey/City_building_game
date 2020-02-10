@@ -11,10 +11,12 @@ public class AB_State_ProductionCycle : BuildingState
     public AB_Input AB_Input { get; private set; }
     public Dictionary<RecourceType, int> InputRecourcesLocal { get; private set; } = new Dictionary<RecourceType, int>();
     public Dictionary<RecourceType, int> OutputRecourcesLocal { get; private set; } = new Dictionary<RecourceType, int>();
+    public bool StaticRecourceProvided_bool { get; private set; } = false;
     public event Action OutputAdded = delegate { };
     public event Action OutputSubstracted = delegate { };
     public event Action InputSubstracted = delegate { };
     public event Action InputAdded = delegate { };
+    public event Action StaticRecourcesProvided = delegate { };
     public new ActiveBuilding Building;
 
     public AB_State_ProductionCycle(ActiveBuilding activeBuilding)
@@ -29,6 +31,12 @@ public class AB_State_ProductionCycle : BuildingState
         AB_Input = new AB_Input(this);
         Ab_Work = new AB_Work(this);
         Ab_Output = new AB_Output(this);
+        checkStaticRecources();
+        
+    }
+    void staticRecourceProvided()
+    {
+        StaticRecourceProvided_bool = true;
         if (abParams.InputRequired)
             AB_Input.Initialize();
         Ab_Work.Initialization();
@@ -71,5 +79,19 @@ public class AB_State_ProductionCycle : BuildingState
     public override void StartStopWork()
     {
         Ab_Work.StartStop();
+    }
+
+    void checkStaticRecources()
+    {
+        StaticRecources.RecourcesChanged -= checkStaticRecources;
+        if (StaticRecources.CanChangeAmount(abParams.StaticRecourceCost, true))
+        {
+            StaticRecources.SubstractRecources(abParams.StaticRecourceCost);
+            if (UtilityDebug.ActivebuildingLog) Debug.Log($"[AB_State_productionCycle] {Building.BuildingName} проверка статичных ресурсов пройдена" +
+                  $" [{Time.deltaTime}]", Building.gameObject);
+            staticRecourceProvided();
+        }
+        else
+            StaticRecources.RecourcesChanged += checkStaticRecources;
     }
 }

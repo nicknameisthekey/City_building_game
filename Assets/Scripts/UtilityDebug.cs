@@ -8,9 +8,13 @@ public class UtilityDebug : MonoBehaviour
 {
     [SerializeField] GameSettings settings;
     public static bool ActivebuildingLog { get; private set; }
+    public static bool PassivebuildingLog { get; private set; }
+    public static bool BuildingConstructionLog { get; private set; }
     public void Initialization(GameSettings settings)
     {
         ActivebuildingLog = settings.ActiveBuildingLog;
+        PassivebuildingLog = settings.PassiveBuildingLog;
+        BuildingConstructionLog = settings.BuildingConstructionLog;
     }
 
     Vector2Int first;
